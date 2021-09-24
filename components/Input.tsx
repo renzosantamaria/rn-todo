@@ -6,11 +6,20 @@ interface IProps {
     value: string;
     onChangeText: (text:string) => void;
     style: string;
+    onSubmitEditing?: ()=> void;
+    onKeyPress: (e:any) => void;
 }
 
-const Input: React.FC <IProps> = ({placeholder, value, onChangeText, style}) => {
+const Input: React.FC <IProps> = ({placeholder, value, onChangeText, onSubmitEditing, onKeyPress, style}) => {
  return (
-    <TextInput style={styles[style]} value={value} placeholder={placeholder} onChangeText={onChangeText} />
+    <TextInput
+        style={styles[style]}
+        value={value}
+        placeholder={placeholder}
+        onSubmitEditing={onSubmitEditing}
+        onChangeText={onChangeText}
+        onKeyPress={(e) => onKeyPress(e)}
+    />
  )
 }
 
