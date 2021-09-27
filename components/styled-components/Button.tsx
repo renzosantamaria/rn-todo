@@ -13,6 +13,7 @@ const StyledButton = styled.TouchableOpacity<styledButton>`
     border: solid 1px black;
     padding: 8px;
     border-radius: 8px;
+    margin: 10px 0;
 `
 interface Button {
     text: string;
