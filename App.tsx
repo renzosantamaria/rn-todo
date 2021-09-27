@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   View,
   Text,
   SafeAreaView,
-  TouchableOpacity,
-  TextInput,
   FlatList,
   StatusBar,
 } from "react-native";
 import Input from "./components/Input";
 import Button from "./components/styled-components/Button";
+import Image from "./components/styled-components/Image"
+import IconButton from "./components/styled-components/IconButton"
 
 type Todo = {
   id: string;
@@ -18,19 +18,17 @@ type Todo = {
   done: boolean;
 };
 
-// interface Fn {
-//   Todo => void
-// }
-
 
 const App: React.FC = () => {
   const [todoList, setTodoList] = useState<Todo[]>([
-    { id: "123d", text: "Hej Korre", done: true },
-    { id: "123", text: "Hej Sara", done: false },
+    { id: "123d", text: "Kissa i skogen", done: true },
+    { id: "123", text: "Gå på en promenad", done: false },
+    { id: "123sdfs", text: "Leka med bollen", done: false },
+    { id: "12s3sdfs", text: "Sova på soffan", done: true },
+    { id: "12s3sdfsddd", text: "Fixa mina ögonbryn", done: true },
   ]);
   const [inputValue, setInputValue] = useState<string>("");
-  // const [showDoneTodos, setShowDoneTodos] = useState(false)
-  const [todoListFilter, settodoListFilter] = useState<string>("incomplete");
+  const [todoListFilter, settodoListFilter] = useState<string>("all");
 
 
   const returnFilteredList = () => {
@@ -50,7 +48,6 @@ const App: React.FC = () => {
       default:
         break;
     }
-    // return data
   }
 
   const addTodoHandler = () => {
@@ -77,68 +74,71 @@ const App: React.FC = () => {
     temp[todoIndex] = item
 
     setTodoList(temp)
-    // console.log(temp)
 
   }
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar hidden={false} backgroundColor={"green"} />
+      <StatusBar hidden={false} backgroundColor={"black"} />
 
-      <Input
-        style={"inputLight"}
-        placeholder={"placeholder..."}
-        value={inputValue}
-        onChangeText={(text) => setInputValue(text)}
-        onSubmitEditing={addTodoHandler}
-        onKeyPress={({ nativeEvent }) => console.log(nativeEvent.key)}
-      />
+      <Image imageSource={require('./assets/dog.jpeg')}/>
+      
+      <View style={{flexDirection: 'row', width: '100%', justifyContent: 'center', alignItems: 'center', paddingHorizontal: 10}}>
+        <Input
+          style={"inputLight"}
+          placeholder={"placeholder..."}
+          value={inputValue}
+          onChangeText={(text) => setInputValue(text)}
+          onSubmitEditing={addTodoHandler}
+          onKeyPress={({ nativeEvent }) => console.log(nativeEvent.key)}
+        />
 
-      <Button
-        bgColor={"white"}
-        color={"black"}
-        onSubmitEditing={addTodoHandler}
-        onPress={addTodoHandler}
-        text={"Add Todo!!"}
-      />
-
-      <Button
-        bgColor={"peachpuff"}
-        color={"black"}
-        onPress={() => {settodoListFilter('done')}}
-        text={"Show Done"}
-      />
-      <Button
-        bgColor={"peachpuff"}
-        color={"black"}
-        onPress={() => {settodoListFilter('incomplete')}}
-        text={"Show Incomplete"}
-      />
-      <Button
-        bgColor={"peachpuff"}
-        color={"black"}
-        onPress={() => {settodoListFilter('all')}}
-        text={"Show all"}
-      />
+        <Button
+          bgColor={"#f8dfa0"}
+          color={"black"}
+          onSubmitEditing={addTodoHandler}
+          onPress={addTodoHandler}
+          text={"Add Todo!!"}
+        />
+      </View>
+      <View style={{flexDirection: 'row', width: '100%', justifyContent: 'space-between', paddingHorizontal: 10}}>
+        <Button
+          bgColor={"#898989"}
+          color={"#111"}
+          onPress={() => {settodoListFilter('done')}}
+          text={"Show Done"}
+        />
+        <Button
+          bgColor={"#898989"}
+          color={"#111"}
+          onPress={() => {settodoListFilter('incomplete')}}
+          text={"Show Incomplete"}
+        />
+        <Button
+          bgColor={"#898989"}
+          color={"#111"}
+          onPress={() => {settodoListFilter('all')}}
+          text={"Show all"}
+        />
+      </View>
+      
 
       <FlatList
         style={{ marginTop: 20, width: "100%", marginHorizontal: "auto" }}
         keyExtractor={(todo) => todo.id}
         data={ returnFilteredList()}
         renderItem={({ item }) => (
-          <View style={{...styles.todoItemWrapper, backgroundColor: `${item.done ? 'white': 'grey'}`} }>
+          <View style={{...styles.todoItemWrapper, backgroundColor: `${item.done ? 'white': 'white'}`} }>
             <Text> {item.text} </Text>
-            <Text onPress={()=> hangleToggle(item.id)} style={{color: 'blue'}}>Toggle</Text>
-            <Text
-              style={styles.delete}
-              onPress={() => deleteTodoHandler(item.id)}
-            >
-              Delete
-            </Text>
+            <View style={{flexDirection: 'row'}}>
+              {/* <Text onPress={()=> hangleToggle(item.id)} style={{color: 'blue'}}>Toggle</Text> */}
+              <IconButton color={"#0a89b8"} name={item.done ? 'checkbox-marked-circle-outline' : 'checkbox-blank-circle-outline'} onPress={() => hangleToggle(item.id)} />
+              <IconButton color={"#c44d4d"} name={'delete'} onPress={() => deleteTodoHandler(item.id)} />
+            </View>
+          
           </View>
         )}
       />
-      {/* </Styles.Wrapper> */}
     </SafeAreaView>
   );
 };
@@ -147,7 +147,6 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "#333",
     color: "white",
-    // flex: 1,
     height: "100%",
     flexDirection: "column",
     alignItems: "center",
