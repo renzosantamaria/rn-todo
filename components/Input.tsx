@@ -34,7 +34,8 @@ const styles = StyleSheet.create({
         borderColor: 'black',
         borderStyle: 'solid',
         borderWidth: 1,
-        marginVertical: 20
+        marginVertical: 20,
+        marginHorizontal: 10
       },
     inputDark: {
         backgroundColor: 'white',
@@ -44,6 +45,7 @@ const styles = StyleSheet.create({
         borderColor: 'black',
         borderStyle: 'solid',
         borderWidth: 1,
-        marginVertical: 20
+        marginVertical: 20,
+        marginHorizontal: 10
       },
 })
