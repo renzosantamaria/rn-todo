@@ -10,10 +10,20 @@ interface styledButton{
 
 const StyledButton = styled.TouchableOpacity<styledButton>`
     background-color: ${props => props.bgColor || 'white'} ;
-    border: solid 1px black;
+    /* border: solid 1px black; */
     padding: 8px;
     border-radius: 8px;
     margin: 10px 0;
+    box-shadow: 4px 4px 3px #000000;
+
+    // Works only on IOS
+    /* shadow-color: "black",
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 6,
+    shadowOpacity: 0.26, */
+
+    // Works only on Android
+    /* elevation: 5; */
 `
 interface Button {
     text: string;
