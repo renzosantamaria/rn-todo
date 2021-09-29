@@ -26,5 +26,13 @@ export const Text = styled.TextInput<Text>`
     /* border: 1px solid black */
 `;
 
-export const SafeAreaView = styled.SafeAreaView`
+export const SafeAreaView = styled.SafeAreaView<Wrapper>`
+    flex: ${props => props.flexNumber || 'none'};
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: ${props => props.bgColor || 'grey'};
+    padding: 20px;
+    height: 100px;
+    width: 100%;
 `
