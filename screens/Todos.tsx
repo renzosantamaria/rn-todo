@@ -7,28 +7,38 @@ import {
   FlatList,
   StatusBar,
 } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../store";
+import { todoActions } from "../store/todo-slice";
+
 import Input from "../components/Input";
 import Button from "../components/styled-components/Button";
 import Image from "../components/styled-components/Image";
 import IconButton from "../components/styled-components/IconButton";
-import * as Colors from '../constans/colors'
+import * as Colors from "../constants/colors";
 
-type Todo = {
-  id: string;
-  text: string;
-  done: boolean;
-};
 
 const Todos: React.FC = () => {
-  const [todoList, setTodoList] = useState<Todo[]>([
-    { id: "123d", text: "Kissa i skogen", done: true },
-    { id: "123", text: "Gå på en promenad", done: false },
-    { id: "123sdfs", text: "Leka med bollen", done: false },
-    { id: "12s3sdfs", text: "Sova på soffan", done: true },
-    { id: "12s3sdfsddd", text: "Fixa mina ögonbryn", done: true },
-  ]);
+  const dispatch = useDispatch()
+
+  // kolla vilken typ man kan använda istället för any
+  const todoList:any = useSelector<RootState>(state => state.todo.todoList) 
+
   const [inputValue, setInputValue] = useState<string>("");
   const [todoListFilter, settodoListFilter] = useState<string>("all");
+
+  const addTodoHandler = () => {
+    dispatch(todoActions.addTodo(inputValue))
+    setInputValue("");
+  };
+
+  const deleteTodoHandler = (id: string) => {
+    dispatch(todoActions.deleteTodo(id))
+  };
+
+  const handleDoneToggle = (id: string) => {
+    dispatch(todoActions.toggleTodoDone(id))
+  };
 
   const returnFilteredList = () => {
     switch (todoListFilter) {
@@ -49,31 +59,6 @@ const Todos: React.FC = () => {
     }
   };
 
-  const addTodoHandler = () => {
-    setTodoList((prev) =>
-      prev.concat({
-        id: Math.floor(Math.random() * 1000).toString(),
-        text: inputValue,
-        done: false,
-      })
-    );
-    setInputValue("");
-  };
-
-  const deleteTodoHandler = (id: string) => {
-    setTodoList((prev) => [...prev].filter((todo) => todo.id !== id));
-  };
-
-  const hangleToggle = (id: string) => {
-    const temp = [...todoList];
-
-    let item = temp.find((todo) => todo.id == id)!;
-    item.done = !item.done;
-    let todoIndex = temp.indexOf(item);
-    temp[todoIndex] = item;
-
-    setTodoList(temp);
-  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -87,7 +72,6 @@ const Todos: React.FC = () => {
           width: "100%",
           justifyContent: "center",
           alignItems: "center",
-        //   paddingHorizontal: 40,
         }}
       >
         <Input
@@ -98,15 +82,14 @@ const Todos: React.FC = () => {
           onSubmitEditing={addTodoHandler}
           onKeyPress={({ nativeEvent }) => console.log(nativeEvent.key)}
         />
-
-        <Button
-          bgColor={"#29728c"}
-          color={"white"}
-          onSubmitEditing={addTodoHandler}
+        <Text 
           onPress={addTodoHandler}
-          text={"Add Todo"}
-        />
+          style={{ color: "#29728c", fontSize: 18 }}
+        >
+          Add Todo
+        </Text>
       </View>
+
       <View
         style={{
           flexDirection: "row",
@@ -149,20 +132,26 @@ const Todos: React.FC = () => {
           <View
             style={{
               ...styles.todoItemWrapper,
-              backgroundColor: `${item.done ? "#222" : "#222"}`
+              backgroundColor: `${item.done ? "#222" : "#222"}`,
             }}
           >
-            <Text style={{color:item.done ? "#8f8f8f" : "#fff", textDecorationLine: item.done ? 'line-through': "none"}}> {item.text} </Text>
+            <Text
+              style={{
+                color: item.done ? "#8f8f8f" : "#fff",
+                textDecorationLine: item.done ? "line-through" : "none",
+              }}
+            >
+              {item.text}
+            </Text>
             <View style={{ flexDirection: "row" }}>
               <IconButton
-                // color={"#fff"}
                 color={`${item.done ? "#48914e" : "#e1e1e1"}`}
                 name={
                   item.done
                     ? "checkbox-marked-circle-outline"
                     : "checkbox-blank-circle-outline"
                 }
-                onPress={() => hangleToggle(item.id)}
+                onPress={() => handleDoneToggle(item.id)}
               />
               <IconButton
                 color={"#f28080"}
@@ -178,47 +167,27 @@ const Todos: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
-    container: {
-      backgroundColor: Colors.background,
-      color: "white",
-      height: "100%",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "center",
-      paddingVertical: 40,
-    },
-    button: {
-      backgroundColor: "white",
-      borderColor: "white",
-      borderStyle: "solid",
-      borderWidth: 2,
-      paddingVertical: 4,
-      paddingHorizontal: 8,
-      borderRadius: 8,
-    },
-    input: {
-      backgroundColor: "white",
-      width: "60%",
-      padding: 6,
-      borderRadius: 50,
-      borderColor: "black",
-      borderStyle: "solid",
-      borderWidth: 1,
-      marginVertical: 20,
-    },
-    todoItemWrapper: {
-    //   backgroundColor: "#47a12b",
-      color: "black",
-      paddingVertical: 6,
-      paddingHorizontal: 14,
-      marginTop: 12,
-      borderRadius: 20,
-      flexDirection: "row",
-      justifyContent: "space-between",
-      width: "80%",
-      marginRight: "auto",
-      marginLeft: "auto",
-    }
-  });
+  container: {
+    backgroundColor: Colors.background,
+    color: "white",
+    height: "100%",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    flex: 1
+  },
+  todoItemWrapper: {
+    color: "black",
+    paddingVertical: 6,
+    paddingHorizontal: 14,
+    marginTop: 12,
+    borderRadius: 20,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "80%",
+    marginRight: "auto",
+    marginLeft: "auto",
+  },
+});
 
-export default Todos
+export default Todos;

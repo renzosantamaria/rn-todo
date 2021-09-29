@@ -1,23 +1,25 @@
 import React from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { createStackNavigator } from "react-navigation-stack";
 import { createBottomTabNavigator } from "react-navigation-tabs";
 import { createAppContainer } from "react-navigation";
 import { Ionicons } from "@expo/vector-icons";
 
-import HomeScreen from "../screens/Home";
-import StatsScreen from "../screens/Stats";
 import TodosScreen from "../screens/Todos";
+import FirstStack from "../screens/FirstStack";
+import SecondStack from "../screens/SecondStack";
 
-import * as Colors from '../constans/colors'
+import * as Colors from '../constants/colors'
 
-const TodosNavigator = createStackNavigator(
+
+const StacksNavigator = createStackNavigator(
   {
-    Home: TodosScreen,
-    Start: HomeScreen,
+    First: FirstStack,
+    Second: SecondStack,
   },
   {
     defaultNavigationOptions: {
-      headerTitle: "Paco's todo",
+      headerTitle: "Stats",
       headerStyle: {
         backgroundColor: Colors.$4dp,
       },
@@ -29,27 +31,43 @@ const TodosNavigator = createStackNavigator(
 const TodosTabNavigator = createBottomTabNavigator(
   {
     Todos: {
-      screen: TodosNavigator,
+      screen: TodosScreen,
       navigationOptions: {
         tabBarIcon: (tabInfo) => {
-          return <Ionicons name="book" size={25} color={"#777"} />;
+          return <Ionicons name="book" size={25} color={tabInfo.tintColor} />;
         },
       },
     },
     Stats: {
-      screen: StatsScreen,
+      screen: StacksNavigator,
       navigationOptions: {
         tabBarIcon: (tabInfo) => {
-          return <Ionicons name="cube" size={25} color={"#777"} />;
+          return <Ionicons name="cube" size={25} color={tabInfo.tintColor} />;
         },
       },
     },
   },
   {
     tabBarOptions: {
-      activeTintColor: "#d02525",
+      activeTintColor: Colors.accentColor,
+      style:{
+        height: 70,
+        backgroundColor: 'black',
+      },
+      tabStyle:{
+        backgroundColor: Colors.background,
+        display: 'flex',
+        alignItems: 'center',
+        alignContent: 'center',
+        height: '100%',
+        paddingVertical: 9
+      },
+      labelStyle:{
+        fontSize: 16
+      }
     },
   }
+  
 );
 
 export default createAppContainer(TodosTabNavigator);
