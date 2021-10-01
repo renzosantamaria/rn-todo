@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -9,7 +9,12 @@ import {
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store";
-import { todoActions } from "../store/todo-slice";
+import {
+  todoActions,
+  // fetchTodos
+}
+  from "../store/todo-slice";
+  import { fetchAllTodos, createTodo, deleteTodoById, toggleDoneState } from "../API";
 
 import Input from "../components/Input";
 import Button from "../components/styled-components/Button";
@@ -27,18 +32,46 @@ const Todos: React.FC = () => {
   const [inputValue, setInputValue] = useState<string>("");
   const [todoListFilter, settodoListFilter] = useState<string>("all");
 
-  const addTodoHandler = () => {
-    dispatch(todoActions.addTodo(inputValue))
+  const addTodoHandler = async () => {
+    // dispatch(todoActions.addTodo(inputValue))
+    
+    const response = await createTodo(inputValue, 2)
+    console.log(response);
+    
     setInputValue("");
+    fetchTodos()
+
   };
 
-  const deleteTodoHandler = (id: string) => {
-    dispatch(todoActions.deleteTodo(id))
+  const deleteTodoHandler = async (id: number) => {
+    // dispatch(todoActions.deleteTodo(id))
+    const response = await deleteTodoById(id)
+    fetchTodos()
   };
 
-  const handleDoneToggle = (id: string) => {
-    dispatch(todoActions.toggleTodoDone(id))
+  const handleDoneToggle = async (id: number) => {
+    // dispatch(todoActions.toggleTodoDone(id))
+    const response = await toggleDoneState(id)
+    fetchTodos()
   };
+
+  const fetchTodos = async () => {
+    // console.log('triggering in Todos by button ');
+    
+    // // dispatch(fetchTodos())
+
+    // const response = await fetch('http://192.168.0.43:5000/api/v1/todos')
+    // const data = await response
+    // console.log(data);
+    const response = await fetchAllTodos()
+    dispatch(todoActions.setTodoList(response))
+    
+  }
+
+  useEffect( () => {
+    fetchTodos()
+
+  }, [])
 
   const returnFilteredList = () => {
     switch (todoListFilter) {
@@ -63,8 +96,9 @@ const Todos: React.FC = () => {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar hidden={false} backgroundColor={"black"} />
-
-      <Image imageSource={require("../assets/dog.jpeg")} />
+      <View style={{marginTop:30}}>
+        <Image imageSource={require("../assets/dog.jpeg")} />
+      </View>
 
       <View
         style={{
@@ -174,7 +208,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    flex: 1
+    flex: 1,
   },
   todoItemWrapper: {
     color: "black",
