@@ -12,6 +12,7 @@
     "@reduxjs/toolkit": "^1.6.1",
     "@types/expo__vector-icons": "^10.0.0",
     "@types/styled-components-react-native": "^5.1.1",
+    "axios": "^0.21.4",
     "expo": "~42.0.1",
     "expo-status-bar": "~1.0.4",
     "react": "16.13.1",
@@ -27,6 +28,7 @@
     "react-navigation-tabs": "^2.11.1",
     "react-redux": "^7.2.5",
     "redux": "^4.1.1",
+    "redux-thunk": "^2.3.0",
     "styled-components": "^5.3.1"
   },
   "devDependencies": {
