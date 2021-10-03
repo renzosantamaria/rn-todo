@@ -15,7 +15,7 @@ type IState = {
 
 const initialState = {
     user: {
-        name: 'Default name',
+        name: 'your name will appear here after you login',
         lastName: '',
         email: 'default@email.se',
         token: ''

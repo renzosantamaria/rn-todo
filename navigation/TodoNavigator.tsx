@@ -39,11 +39,11 @@ const TodosTabNavigator = createBottomTabNavigator(
         },
       },
     },
-    Stats: {
+    Login: {
       screen: StacksNavigator,
       navigationOptions: {
         tabBarIcon: (tabInfo) => {
-          return <Ionicons name="cube" size={25} color={tabInfo.tintColor} />;
+          return <Ionicons name="key" size={25} color={tabInfo.tintColor} />;
         },
       },
     },

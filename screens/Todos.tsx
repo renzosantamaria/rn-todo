@@ -90,7 +90,7 @@ const Todos: React.FC = () => {
     <SafeAreaView style={styles.container}>
       <StatusBar hidden={false} backgroundColor={"black"} />
       <View style={{ marginTop: 30, alignItems: "center" }}>
-        <Text style={styles.welcome}> Bienvenido {user.name}</Text>
+        <Text style={styles.welcome}> Welcome, {user.name}</Text>
         <Image imageSource={require("../assets/dog.jpeg")} />
       </View>
 
