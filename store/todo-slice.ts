@@ -44,7 +44,7 @@ const todoSlice = createSlice({
     initialState,
     reducers: {
         setTodoList(state, action: PayloadAction<Todo[]>){
-            console.log(action);
+            // console.log(action);
             
             state.todoList = action.payload
         },

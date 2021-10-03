@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import todoSlice from "./todo-slice";
+import userSlice from "./user-slice";
 // import { applyMiddleware } from "redux";
 // import ReduxThunk from 'redux-thunk'
 
 const store = configureStore({
     reducer: {
-        todo: todoSlice
+        todo: todoSlice,
+        user: userSlice
     },
     middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

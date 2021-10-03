@@ -12,9 +12,13 @@ import { RootState } from "../store";
 import {
   todoActions,
   // fetchTodos
-}
-  from "../store/todo-slice";
-  import { fetchAllTodos, createTodo, deleteTodoById, toggleDoneState } from "../API";
+} from "../store/todo-slice";
+import {
+  fetchAllTodos,
+  createTodo,
+  deleteTodoById,
+  toggleDoneState,
+} from "../API";
 
 import Input from "../components/Input";
 import Button from "../components/styled-components/Button";
@@ -22,56 +26,46 @@ import Image from "../components/styled-components/Image";
 import IconButton from "../components/styled-components/IconButton";
 import * as Colors from "../constants/colors";
 
-
 const Todos: React.FC = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   // kolla vilken typ man kan använda istället för any
-  const todoList:any = useSelector<RootState>(state => state.todo.todoList) 
+  const todoList: any = useSelector<RootState>((state) => state.todo.todoList);
+  const user: any = useSelector<RootState>((state) => state.user.user);
+  console.log(user);
 
   const [inputValue, setInputValue] = useState<string>("");
   const [todoListFilter, settodoListFilter] = useState<string>("all");
 
   const addTodoHandler = async () => {
     // dispatch(todoActions.addTodo(inputValue))
-    
-    const response = await createTodo(inputValue, 2)
-    console.log(response);
-    
-    setInputValue("");
-    fetchTodos()
 
+    const response = await createTodo(inputValue, 2);
+
+    setInputValue("");
+    fetchTodos();
   };
 
   const deleteTodoHandler = async (id: number) => {
     // dispatch(todoActions.deleteTodo(id))
-    const response = await deleteTodoById(id)
-    fetchTodos()
+    const response = await deleteTodoById(id);
+    fetchTodos();
   };
 
   const handleDoneToggle = async (id: number) => {
     // dispatch(todoActions.toggleTodoDone(id))
-    const response = await toggleDoneState(id)
-    fetchTodos()
+    const response = await toggleDoneState(id);
+    fetchTodos();
   };
 
   const fetchTodos = async () => {
-    // console.log('triggering in Todos by button ');
-    
-    // // dispatch(fetchTodos())
+    const response = await fetchAllTodos();
+    dispatch(todoActions.setTodoList(response));
+  };
 
-    // const response = await fetch('http://192.168.0.43:5000/api/v1/todos')
-    // const data = await response
-    // console.log(data);
-    const response = await fetchAllTodos()
-    dispatch(todoActions.setTodoList(response))
-    
-  }
-
-  useEffect( () => {
-    fetchTodos()
-
-  }, [])
+  useEffect(() => {
+    fetchTodos();
+  }, []);
 
   const returnFilteredList = () => {
     switch (todoListFilter) {
@@ -92,11 +86,11 @@ const Todos: React.FC = () => {
     }
   };
 
-
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar hidden={false} backgroundColor={"black"} />
-      <View style={{marginTop:30}}>
+      <View style={{ marginTop: 30, alignItems: "center" }}>
+        <Text style={styles.welcome}> Bienvenido {user.name}</Text>
         <Image imageSource={require("../assets/dog.jpeg")} />
       </View>
 
@@ -116,7 +110,7 @@ const Todos: React.FC = () => {
           onSubmitEditing={addTodoHandler}
           onKeyPress={({ nativeEvent }) => console.log(nativeEvent.key)}
         />
-        <Text 
+        <Text
           onPress={addTodoHandler}
           style={{ color: "#29728c", fontSize: 18 }}
         >
@@ -133,6 +127,7 @@ const Todos: React.FC = () => {
         }}
       >
         <Button
+          width={"auto"}
           bgColor={Colors.$4dp}
           color={"#fff"}
           onPress={() => {
@@ -141,6 +136,7 @@ const Todos: React.FC = () => {
           text={"Show Done"}
         />
         <Button
+          width={"auto"}
           bgColor={Colors.$4dp}
           color={"#fff"}
           onPress={() => {
@@ -149,6 +145,7 @@ const Todos: React.FC = () => {
           text={"Show Incomplete"}
         />
         <Button
+          width={"auto"}
           bgColor={Colors.$4dp}
           color={"#fff"}
           onPress={() => {
@@ -221,6 +218,11 @@ const styles = StyleSheet.create({
     width: "80%",
     marginRight: "auto",
     marginLeft: "auto",
+  },
+  welcome: {
+    fontSize: 30,
+    color: "white",
+    marginVertical: 20,
   },
 });
 

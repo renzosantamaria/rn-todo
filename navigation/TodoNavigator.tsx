@@ -6,6 +6,7 @@ import { createAppContainer } from "react-navigation";
 import { Ionicons } from "@expo/vector-icons";
 
 import TodosScreen from "../screens/Todos";
+import LoginScreen from "../screens/Login";
 import FirstStack from "../screens/FirstStack";
 import SecondStack from "../screens/SecondStack";
 
@@ -14,12 +15,12 @@ import * as Colors from '../constants/colors'
 
 const StacksNavigator = createStackNavigator(
   {
-    First: FirstStack,
+    First: LoginScreen,
     Second: SecondStack,
   },
   {
     defaultNavigationOptions: {
-      headerTitle: "Stats",
+      headerTitle: "Login",
       headerStyle: {
         backgroundColor: Colors.$4dp,
       },

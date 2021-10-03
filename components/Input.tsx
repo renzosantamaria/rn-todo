@@ -7,7 +7,7 @@ interface IProps {
     onChangeText: (text:string) => void;
     style: string;
     onSubmitEditing?: ()=> void;
-    onKeyPress: (e:any) => void;
+    onKeyPress?: (e:any) => void;
 }
 
 const Input: React.FC <IProps> = ({placeholder, value, onChangeText, onSubmitEditing, onKeyPress, style}) => {
@@ -18,7 +18,7 @@ const Input: React.FC <IProps> = ({placeholder, value, onChangeText, onSubmitEdi
         placeholder={placeholder}
         onSubmitEditing={onSubmitEditing}
         onChangeText={onChangeText}
-        onKeyPress={(e) => onKeyPress(e)}
+        // onKeyPress={(e) => onKeyPress(e)}
     />
  )
 }
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
         width: '60%',
         padding: 6,
         borderRadius: 50,
-        borderColor: 'black',
+        borderColor: 'white',
         borderStyle: 'solid',
         borderWidth: 1,
         marginVertical: 20,

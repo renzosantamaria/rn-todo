@@ -1,7 +1,6 @@
 import axios, { AxiosError, AxiosResponse } from 'axios'
 
 
-// 'https://ts-rn-todo.herokuapp.com//api/v1'
 
 const API = axios.create({
     baseURL: 'https://ts-rn-todo.herokuapp.com/api/v1',
@@ -20,13 +19,40 @@ export const login = async (email, password) => {
         })
         if (response.status === 200) {
             setDefaultHeaders(response.data.token)
-            return response.data.json()
+            return response.data
         }else{
             return false
         }
 
     } catch (error) {
         console.log(error)
+    }
+}
+
+export const registerUser = async (surname, lastname, email, password) => {
+    try {
+        const response = await API.post('register', {
+            surname,
+            lastname,
+            email,
+            password
+        })
+
+        if (response.status === 200) {
+            console.log('good request');
+            
+            // setDefaultHeaders(response.data.token)
+            return response.data
+        }else{
+            // return response.data
+            
+            throw new Error("could not create the user");
+            
+        }
+
+    } catch (error) {
+        console.log(error);
+        
     }
 }
 
