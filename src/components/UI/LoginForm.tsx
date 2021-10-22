@@ -1,38 +1,32 @@
 import React, {useState} from "react";
-import { useDispatch } from "react-redux";
+import { connect, ConnectedProps } from "react-redux";
 import { StyleSheet, View, Text } from "react-native";
 import Button from "../styled-components/Button";
 import Input from "../Input";
-import { userActions } from "../../store/user-slice";
 import * as Colors from '../../constants/colors'
-import * as API from '../../API'
+import { IReduxState } from "../../store/store.types";
+import authStateSelector from "../../store/auth/auth.selectors";
+import authMethods from "../../store/auth/auth.methods"
+
+const connectStateAndDispatch = connect(
+    (state: IReduxState) => ({
+        isAuth: authStateSelector.authStateSelector(state)
+    }),
+    {
+        loginUser: authMethods.login
+    }
+)
 
 interface IProps {
     showRegister: () => void
 }
 
-const LoginForm: React.FC<IProps> = (props) => {
-    const [email, setEmail] = useState<string>("");
-    const [password, setPassword] = useState<string>("");
-
-    const dispatch = useDispatch()
-
+const LoginForm: React.FC< ConnectedProps<typeof connectStateAndDispatch> & IProps> = (props) => {
+    const [email, setEmail] = useState<string>("renzo.santamaria@outlook.com");
+    const [password, setPassword] = useState<string>("password");
 
     const handleLogin =  async () => {
-        const response = await API.login(email, password)
-        console.log(response);
-        
-        const user = response.user
-        const token = response.token
-    
-        dispatch(userActions.setUser({
-            name: user.surname,
-            lastName: user.lastname,
-            email: user.email,
-            token: token
-        }))
-        
-        // console.log( 'logged in successfully!' );
+        props.loginUser({email, password})
       }
 
     return(
@@ -84,4 +78,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default LoginForm
+export default connectStateAndDispatch(LoginForm)
