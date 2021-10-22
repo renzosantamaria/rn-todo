@@ -1,12 +1,12 @@
 import React, {useState} from "react";
 import { connect, ConnectedProps } from "react-redux";
 import { StyleSheet, View, Text } from "react-native";
-import Button from "../styled-components/Button";
-import Input from "../Input";
-import * as Colors from '../../constants/colors'
-import { IReduxState } from "../../store/store.types";
-import authStateSelector from "../../store/auth/auth.selectors";
-import authMethods from "../../store/auth/auth.methods"
+import Button from "../components/styled-components/Button";
+import Input from "../components/Input";
+import * as Colors from '../constants/colors'
+import { IReduxState } from "../store/store.types";
+import authStateSelector from "../store/auth/auth.selectors";
+import authMethods from "../store/auth/auth.methods"
 
 const connectStateAndDispatch = connect(
     (state: IReduxState) => ({

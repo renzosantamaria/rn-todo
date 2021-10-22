@@ -4,9 +4,7 @@ import { NavigatorScreenParams } from "@react-navigation/native";
 export type UnauthorizedNavigationStack = {
     Landing: undefined;
     Login: undefined;
-    // ResetPassword: undefined;
-    // Signup: undefined;
-    // ImageUpload: IImageUploadStack;
+    Register: undefined;
   };
   
   export type AuthorizedNavigationStack = {
@@ -17,6 +15,7 @@ export type UnauthorizedNavigationStack = {
 
   export type IBottomTabStack = {
     Dashboard: NavigatorScreenParams<IDashboardStack>;
+    Profile: NavigatorScreenParams<IProfileStack>;
     // StartFreerun: NavigatorScreenParams<IStartFreerunStack>;
     // FindGame: NavigatorScreenParams<IFindGameStack>;
     // Profile: NavigatorScreenParams<IProfileStack>;
@@ -25,3 +24,7 @@ export type UnauthorizedNavigationStack = {
   export type IDashboardStack = {
     Dashboard: undefined;
   };
+
+  export type IProfileStack = {
+    Profile: undefined;
+  }
