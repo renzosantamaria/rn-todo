@@ -8,11 +8,11 @@ import {
   StatusBar,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../store";
-import {
-  todoActions,
-  // fetchTodos
-} from "../store/todo-slice";
+// import { RootState } from "../store";
+// import {
+//   todoActions,
+//   // fetchTodos
+// } from "../store/todo-slice";
 import {
   fetchAllTodos,
   createTodo,
@@ -20,19 +20,27 @@ import {
   toggleDoneState,
 } from "../API";
 
+import { connect, ConnectedProps } from "react-redux";
+import { IReduxState } from "../store/store.types";
+import userSelectors from "../store/user/user.selectors";
+
 import Input from "../components/Input";
 import Button from "../components/styled-components/Button";
 import Image from "../components/styled-components/Image";
 import IconButton from "../components/styled-components/IconButton";
 import * as Colors from "../constants/colors";
+import authMethods from "../store/auth/auth.methods";
 
-const Todos: React.FC = () => {
-  const dispatch = useDispatch();
+const connectStateAndDispatch = connect(
+  (state: IReduxState) => ({
+    user: userSelectors.userStateSelector(state)
+  }),
+  {
+    logout: authMethods.logout
+  }
+)
 
-  // kolla vilken typ man kan använda istället för any
-  const todoList: any = useSelector<RootState>((state) => state.todo.todoList);
-  const user: any = useSelector<RootState>((state) => state.user.user);
-  console.log(user);
+const Todos: React.FC<ConnectedProps<typeof connectStateAndDispatch>> = (props) => {
 
   const [inputValue, setInputValue] = useState<string>("");
   const [todoListFilter, settodoListFilter] = useState<string>("all");
@@ -43,54 +51,58 @@ const Todos: React.FC = () => {
     const response = await createTodo(inputValue, 2);
 
     setInputValue("");
-    fetchTodos();
+    // fetchTodos();
   };
 
   const deleteTodoHandler = async (id: number) => {
     // dispatch(todoActions.deleteTodo(id))
     const response = await deleteTodoById(id);
-    fetchTodos();
+    // fetchTodos();
   };
 
   const handleDoneToggle = async (id: number) => {
     // dispatch(todoActions.toggleTodoDone(id))
     const response = await toggleDoneState(id);
-    fetchTodos();
+    // fetchTodos();
   };
 
-  const fetchTodos = async () => {
-    const response = await fetchAllTodos();
-    dispatch(todoActions.setTodoList(response));
-  };
+  // const fetchTodos = async () => {
+  //   const response = await fetchAllTodos();
+  //   dispatch(todoActions.setTodoList(response));
+  // };
 
-  useEffect(() => {
-    fetchTodos();
-  }, []);
+  // useEffect(() => {
+  //   fetchTodos();
+  // }, []);
 
-  const returnFilteredList = () => {
-    switch (todoListFilter) {
-      case "all":
-        return todoList;
-        break;
+  // const returnFilteredList = () => {
+  //   switch (todoListFilter) {
+  //     case "all":
+  //       return todoList;
+  //       break;
 
-      case "done":
-        return todoList.filter((todo) => todo.done == true);
-        break;
+  //     case "done":
+  //       return todoList.filter((todo) => todo.done == true);
+  //       break;
 
-      case "incomplete":
-        return todoList.filter((todo) => todo.done == false);
-        break;
+  //     case "incomplete":
+  //       return todoList.filter((todo) => todo.done == false);
+  //       break;
 
-      default:
-        break;
-    }
-  };
+  //     default:
+  //       break;
+  //   }
+  // };
+
+  const handleLogout = () => {
+    props.logout()
+  }
 
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar hidden={false} backgroundColor={"black"} />
       <View style={{ marginTop: 30, alignItems: "center" }}>
-        <Text style={styles.welcome}> Welcome, {user.name}</Text>
+        <Text style={styles.welcome}> Welcome, {props.user.name} </Text>
         <Image imageSource={require("../assets/dog.jpeg")} />
       </View>
 
@@ -154,8 +166,15 @@ const Todos: React.FC = () => {
           text={"Show all"}
         />
       </View>
+      <Button
+          width={"auto"}
+          bgColor={Colors.$4dp}
+          color={"#dc5151"}
+          onPress={handleLogout}
+          text={"Logout"}
+        />
 
-      <FlatList
+      {/* <FlatList
         style={{ marginTop: 20, width: "100%", marginHorizontal: "auto" }}
         keyExtractor={(todo) => todo.id}
         data={returnFilteredList()}
@@ -191,8 +210,8 @@ const Todos: React.FC = () => {
               />
             </View>
           </View>
-        )}
-      />
+        )} 
+      />*/}
     </SafeAreaView>
   );
 };
@@ -226,4 +245,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Todos;
+export default connectStateAndDispatch(Todos);

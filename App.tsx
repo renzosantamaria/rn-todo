@@ -1,13 +1,14 @@
 import React from "react";
 import { Provider } from "react-redux";
-import store from "./store";
+import ReduxStore from "./src/store/index"
 
-import TodosTabNavigator from './navigation/TodoNavigator'
+import TodoApp from "./src/index"
 
-const App: React.FC = () => {
+
+const App: React.FC= () => {
   return(
-    <Provider store={store}>
-      <TodosTabNavigator></TodosTabNavigator>
+    <Provider store={ReduxStore}>
+      <TodoApp />
     </Provider>
   )
 };
