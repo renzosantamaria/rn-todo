@@ -29,6 +29,10 @@ const LoginForm: React.FC< ConnectedProps<typeof connectStateAndDispatch> & IPro
         props.loginUser({email, password})
       }
 
+    const navigateToRegister = () => {
+    //props.navigation.navigate("Register")
+    }
+
     return(
         <View style={styles.loginForm} >
             <Text style={styles.heading}>Login </Text>
