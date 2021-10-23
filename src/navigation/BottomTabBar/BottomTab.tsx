@@ -30,9 +30,9 @@ const BottomTab: React.FC<Props & TouchableOpacityProps> = (props) => (
     {props.icon && (
       <Icon
         icon={props.icon}
-        // size="xxs"
+        size={20}
+        color={props.isActive ? 'black' : 'grey'}
         // marginbottom="xxxs"
-        // color={props.isActive ? "primary" : "disabled"}
       />
     )}
 
@@ -40,7 +40,7 @@ const BottomTab: React.FC<Props & TouchableOpacityProps> = (props) => (
       type="fineprint"
       color={props.isActive ? "primary" : "disabled"}
     > */}
-    <Text>
+    <Text style={{color: props.isActive ? 'black' : 'grey'}}>
       {props.label}
     </Text>
     {/* </ContentText> */}

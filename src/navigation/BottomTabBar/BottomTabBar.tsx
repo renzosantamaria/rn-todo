@@ -7,10 +7,12 @@ import React from "react";
 import { SafeAreaView, View } from "react-native";
 import styled from "styled-components/native";
 
+import { useNavigation } from "@react-navigation/native";
+
 import BottomTab from "./BottomTab";
 
 const Wrapper = styled(SafeAreaView)`
-  background-color: #fff;
+  background-color: #ffffff;
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.25);
 `;
 
@@ -22,6 +24,16 @@ const Container = styled(View)`
 `;
 
 const BottomTabBar: React.FC<object & BottomTabBarProps> = (props) => {
+  // const navigation = useNavigation()
+
+  // navigation.setOptions({
+  //   headerShown: false,
+  //   // headerStyle: {
+  //   //   backgroundColor: 'white',
+  //   //   elevation: 0,
+  //   //   shadowOpacity: 0,
+  //   // }
+  // })
   const tabs: {
     [key in keyof IBottomTabStack]: {
       label?: string;
@@ -31,6 +43,10 @@ const BottomTabBar: React.FC<object & BottomTabBarProps> = (props) => {
     Dashboard: {
       label: "Start",
       icon: "home",
+    },
+    Chatt: {
+      label: "Chatt",
+      icon: "facebook-messenger"
     },
     // StartFreerun: {
     //   label: "Freerun",

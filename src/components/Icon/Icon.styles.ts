@@ -15,4 +15,6 @@ import { IIcon } from "./Icon.types";
 // `;
 
 export const StyledIcon = styled(FontAwesome5)`
-    color: black`
+    color: ${(props) => props.color};
+    font-size: ${(props) => props.size+ 'px'}
+    `

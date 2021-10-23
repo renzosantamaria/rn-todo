@@ -3,8 +3,8 @@
 
 export interface IIcon {
   icon: IconType;
-//   size?: FontSize;
-//   color?: ColorType;
+  size?: number;
+  color?: string;
   colorShade?: "brighter" | "darker";
   colorVariant?: "background" | "text";
 }

@@ -1,4 +1,4 @@
-// import { WithMarginProps } from "b3runtime/styles/spacing";
+import { WithMarginProps } from "../../styles/spacing";
 // import { fontSize } from "b3runtime/styles/typography";
 import React from "react";
 import { TouchableOpacityProps } from "react-native";
@@ -7,10 +7,15 @@ import { View } from "react-native";
 import * as Style from "./Icon.styles";
 import { IIcon } from "./Icon.types";
 
-const Icon: React.FC<IIcon  & TouchableOpacityProps> = ({
+// interface IProps {
+//     size: number;
+//     color: string;
+// }
+
+const Icon: React.FC<IIcon & TouchableOpacityProps> = ({
   icon,
-//   size = "md",
-//   color,
+  size,
+  color,
   colorShade,
   colorVariant,
   ...props
@@ -23,8 +28,8 @@ const Icon: React.FC<IIcon  & TouchableOpacityProps> = ({
     <View>
       <Style.StyledIcon
         name={icon}
-        size={18}
-        color={"#020202"}
+        size={size}
+        color={color}
         colorShade={colorShade}
         colorVariant={colorVariant}
       />
@@ -33,8 +38,8 @@ const Icon: React.FC<IIcon  & TouchableOpacityProps> = ({
     <View>
       <Style.StyledIcon
         name={icon}
-        size={18}
-        color={"#020202"}
+        size={size}
+        color={color}
         colorShade={colorShade}
         colorVariant={colorVariant}
       />

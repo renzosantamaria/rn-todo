@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigation } from "@react-navigation/native";
 import {
   StyleSheet,
   View,
@@ -20,6 +21,8 @@ import {
   toggleDoneState,
 } from "../API";
 
+import Screen from "../components/Screen/Screen";
+
 import { connect, ConnectedProps } from "react-redux";
 import { IReduxState } from "../store/store.types";
 import userSelectors from "../store/user/user.selectors";
@@ -33,15 +36,16 @@ import authMethods from "../store/auth/auth.methods";
 
 const connectStateAndDispatch = connect(
   (state: IReduxState) => ({
-    user: userSelectors.userStateSelector(state)
+    user: userSelectors.userStateSelector(state),
   }),
   {
-    logout: authMethods.logout
+    logout: authMethods.logout,
   }
-)
+);
 
-const Todos: React.FC<ConnectedProps<typeof connectStateAndDispatch>> = (props) => {
-
+const Todos: React.FC<ConnectedProps<typeof connectStateAndDispatch>> = (
+  props
+) => {
   const [inputValue, setInputValue] = useState<string>("");
   const [todoListFilter, settodoListFilter] = useState<string>("all");
 
@@ -95,78 +99,86 @@ const Todos: React.FC<ConnectedProps<typeof connectStateAndDispatch>> = (props) 
   // };
 
   const handleLogout = () => {
-    props.logout()
-  }
+    props.logout();
+  };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar hidden={false} backgroundColor={"black"} />
-      <View style={{ marginTop: 30, alignItems: "center" }}>
-        <Text style={styles.welcome}> Welcome, {props.user.name} </Text>
-        <Image imageSource={require("../assets/dog.jpeg")} />
-      </View>
+    <Screen
+      bgcolor="black"
+      header={{ hide: true, color: "primary" }}
+      transparentBackground={true}
+      // showLoadingIndicator={props.isLoginGoogleLoading}
+      // loadingText="Logging in..."
+      ignorepadding={true}
+    >
+      <SafeAreaView style={styles.container}>
+        <StatusBar hidden={false} backgroundColor={"black"} />
+        <View style={{ marginTop: 30, alignItems: "center" }}>
+          <Text style={styles.welcome}> Welcome, {props.user.name} </Text>
+          <Image imageSource={require("../assets/dog.jpeg")} />
+        </View>
 
-      <View
-        style={{
-          flexDirection: "row",
-          width: "100%",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Input
-          style={"inputLight"}
-          placeholder={"placeholder..."}
-          value={inputValue}
-          onChangeText={(text) => setInputValue(text)}
-          onSubmitEditing={addTodoHandler}
-          onKeyPress={({ nativeEvent }) => console.log(nativeEvent.key)}
-        />
-        <Text
-          onPress={addTodoHandler}
-          style={{ color: "#29728c", fontSize: 18 }}
+        <View
+          style={{
+            flexDirection: "row",
+            width: "100%",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
         >
-          Add Todo
-        </Text>
-      </View>
+          <Input
+            style={"inputLight"}
+            placeholder={"placeholder..."}
+            value={inputValue}
+            onChangeText={(text) => setInputValue(text)}
+            onSubmitEditing={addTodoHandler}
+            onKeyPress={({ nativeEvent }) => console.log(nativeEvent.key)}
+          />
+          <Text
+            onPress={addTodoHandler}
+            style={{ color: "#29728c", fontSize: 18 }}
+          >
+            Add Todo
+          </Text>
+        </View>
 
-      <View
-        style={{
-          flexDirection: "row",
-          width: "100%",
-          justifyContent: "space-between",
-          paddingHorizontal: 18,
-        }}
-      >
-        <Button
-          width={"auto"}
-          bgColor={Colors.$4dp}
-          color={"#fff"}
-          onPress={() => {
-            settodoListFilter("done");
+        <View
+          style={{
+            flexDirection: "row",
+            width: "100%",
+            justifyContent: "space-between",
+            paddingHorizontal: 18,
           }}
-          text={"Show Done"}
-        />
+        >
+          <Button
+            width={"auto"}
+            bgColor={Colors.$4dp}
+            color={"#fff"}
+            onPress={() => {
+              settodoListFilter("done");
+            }}
+            text={"Show Done"}
+          />
+          <Button
+            width={"auto"}
+            bgColor={Colors.$4dp}
+            color={"#fff"}
+            onPress={() => {
+              settodoListFilter("incomplete");
+            }}
+            text={"Show Incomplete"}
+          />
+          <Button
+            width={"auto"}
+            bgColor={Colors.$4dp}
+            color={"#fff"}
+            onPress={() => {
+              settodoListFilter("all");
+            }}
+            text={"Show all"}
+          />
+        </View>
         <Button
-          width={"auto"}
-          bgColor={Colors.$4dp}
-          color={"#fff"}
-          onPress={() => {
-            settodoListFilter("incomplete");
-          }}
-          text={"Show Incomplete"}
-        />
-        <Button
-          width={"auto"}
-          bgColor={Colors.$4dp}
-          color={"#fff"}
-          onPress={() => {
-            settodoListFilter("all");
-          }}
-          text={"Show all"}
-        />
-      </View>
-      <Button
           width={"auto"}
           bgColor={Colors.$4dp}
           color={"#dc5151"}
@@ -174,45 +186,46 @@ const Todos: React.FC<ConnectedProps<typeof connectStateAndDispatch>> = (props) 
           text={"Logout"}
         />
 
-      {/* <FlatList
-        style={{ marginTop: 20, width: "100%", marginHorizontal: "auto" }}
-        keyExtractor={(todo) => todo.id}
-        data={returnFilteredList()}
-        renderItem={({ item }) => (
-          <View
-            style={{
-              ...styles.todoItemWrapper,
-              backgroundColor: `${item.done ? "#222" : "#222"}`,
-            }}
-          >
-            <Text
+        {/* <FlatList
+          style={{ marginTop: 20, width: "100%", marginHorizontal: "auto" }}
+          keyExtractor={(todo) => todo.id}
+          data={returnFilteredList()}
+          renderItem={({ item }) => (
+            <View
               style={{
-                color: item.done ? "#8f8f8f" : "#fff",
-                textDecorationLine: item.done ? "line-through" : "none",
+                ...styles.todoItemWrapper,
+                backgroundColor: `${item.done ? "#222" : "#222"}`,
               }}
             >
-              {item.text}
-            </Text>
-            <View style={{ flexDirection: "row" }}>
-              <IconButton
-                color={`${item.done ? "#48914e" : "#e1e1e1"}`}
-                name={
-                  item.done
-                    ? "checkbox-marked-circle-outline"
-                    : "checkbox-blank-circle-outline"
-                }
-                onPress={() => handleDoneToggle(item.id)}
-              />
-              <IconButton
-                color={"#f28080"}
-                name={"delete"}
-                onPress={() => deleteTodoHandler(item.id)}
-              />
+              <Text
+                style={{
+                  color: item.done ? "#8f8f8f" : "#fff",
+                  textDecorationLine: item.done ? "line-through" : "none",
+                }}
+              >
+                {item.text}
+              </Text>
+              <View style={{ flexDirection: "row" }}>
+                <IconButton
+                  color={`${item.done ? "#48914e" : "#e1e1e1"}`}
+                  name={
+                    item.done
+                      ? "checkbox-marked-circle-outline"
+                      : "checkbox-blank-circle-outline"
+                  }
+                  onPress={() => handleDoneToggle(item.id)}
+                />
+                <IconButton
+                  color={"#f28080"}
+                  name={"delete"}
+                  onPress={() => deleteTodoHandler(item.id)}
+                />
+              </View>
             </View>
-          </View>
-        )} 
-      />*/}
-    </SafeAreaView>
+          )} 
+        />*/}
+      </SafeAreaView>
+    </Screen>
   );
 };
 
@@ -220,11 +233,13 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: Colors.background,
     color: "white",
-    height: "100%",
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
     flex: 1,
+    height: "100%",
+    width: "auto",
+    padding: 0
   },
   todoItemWrapper: {
     color: "black",

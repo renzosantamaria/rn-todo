@@ -6,6 +6,7 @@ import RegisterForm from "../components/UI/RegisterForm";
 import { RouteProp } from "@react-navigation/native";
 import { UnauthorizedNavigationStack } from "../navigation/Navigation.types";
 import { StackNavigationProp } from "@react-navigation/stack";
+import Screen from "../components/Screen/Screen";
 
 import Button from "../components/styled-components/Button";
 import * as Colors from "../constants/colors";
@@ -28,6 +29,14 @@ const LandingScreen: React.FC<Props> = (props) => {
   }
 
   return (
+    <Screen
+      bgcolor="black"
+      header={{ hide: true, color: "#fff" }}
+      transparentBackground={true}
+      // showLoadingIndicator={props.isLoginGoogleLoading}
+      // loadingText="Logging in..."
+      ignorepadding={true}
+    >
     <SafeAreaView style={styles.container}>
       <Button
         width={"60%"}
@@ -44,6 +53,7 @@ const LandingScreen: React.FC<Props> = (props) => {
         text={"CREATE AN ACCOUNT"}
       />
     </SafeAreaView>
+    </Screen>
   );
 };
 

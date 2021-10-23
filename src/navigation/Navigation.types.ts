@@ -15,6 +15,7 @@ export type UnauthorizedNavigationStack = {
 
   export type IBottomTabStack = {
     Dashboard: NavigatorScreenParams<IDashboardStack>;
+    Chatt: NavigatorScreenParams<IChattStack>
     Profile: NavigatorScreenParams<IProfileStack>;
     // StartFreerun: NavigatorScreenParams<IStartFreerunStack>;
     // FindGame: NavigatorScreenParams<IFindGameStack>;
@@ -27,4 +28,8 @@ export type UnauthorizedNavigationStack = {
 
   export type IProfileStack = {
     Profile: undefined;
+  }
+
+  export type IChattStack = {
+    Chatt: undefined
   }

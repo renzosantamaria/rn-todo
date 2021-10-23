@@ -60,9 +60,9 @@ const RegisterForm: React.FC<IProps> = (props) => {
         onPress={registerUser}
         text={"REGISTER"}
       />
-      <Text onPress={props.showLogin} style={styles.registerText}>
+      {/* <Text onPress={props.showLogin} style={styles.registerText}>
         Cancel
-      </Text>
+      </Text> */}
     </View>
   );
 };
@@ -75,14 +75,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   heading: {
-    color: "white",
+    color: "black",
     fontSize: 30,
   },
   registerButton: {
     width: "60%",
   },
   registerText: {
-    color: "#fff",
+    color: "#000000",
     textAlign: "right",
     width: "60%",
   },
