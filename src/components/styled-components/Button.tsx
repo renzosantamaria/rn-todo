@@ -6,10 +6,12 @@ interface styledButton{
     onPress: () => void;
     onSubmitEditing?: () => void;
     bgColor?: string
+    width?: string
 }
 
 const StyledButton = styled.TouchableOpacity<styledButton>`
     background-color: ${props => props.bgColor || 'white'} ;
+    width: ${props => props.width || '100%'} ;
     /* border: solid 1px black; */
     padding: 8px;
     border-radius: 8px;
@@ -29,14 +31,15 @@ interface Button {
     text: string;
     bgColor?: string;
     color?: string;
+    width?: string;
     onPress: () => void;
     onSubmitEditing?: () => void;
 }
 
-const Button: React.FC <Button> = ({text, bgColor, color, onPress, onSubmitEditing}) => {
+const Button: React.FC <Button> = ({text, bgColor, color, width, onPress, onSubmitEditing}) => {
     return (
-        <StyledButton bgColor={bgColor} onSubmitEditing={onSubmitEditing} onPress={onPress}>
-            <Text style={{color: color}}> {text} </Text>
+        <StyledButton width={width} bgColor={bgColor} onSubmitEditing={onSubmitEditing} onPress={onPress}>
+            <Text style={{color: color, textAlign: 'center'}}> {text} </Text>
         </StyledButton>
     )
 }
