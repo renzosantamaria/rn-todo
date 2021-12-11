@@ -33,13 +33,17 @@ import Image from "../components/styled-components/Image";
 import IconButton from "../components/styled-components/IconButton";
 import * as Colors from "../constants/colors";
 import authMethods from "../store/auth/auth.methods";
+import todoSelectors from "../store/todo/todo.selectors";
+import todoMethods from "../store/todo/todo.methods";
 
 const connectStateAndDispatch = connect(
   (state: IReduxState) => ({
     user: userSelectors.userStateSelector(state),
+    todos: todoSelectors.todosStateSelector(state)
   }),
   {
     logout: authMethods.logout,
+    getAllTodos: todoMethods.getAllTodos,
   }
 );
 
@@ -75,28 +79,28 @@ const Todos: React.FC<ConnectedProps<typeof connectStateAndDispatch>> = (
   //   dispatch(todoActions.setTodoList(response));
   // };
 
-  // useEffect(() => {
-  //   fetchTodos();
-  // }, []);
+  useEffect(() => {
+    props.getAllTodos();
+  }, []);
 
-  // const returnFilteredList = () => {
-  //   switch (todoListFilter) {
-  //     case "all":
-  //       return todoList;
-  //       break;
+  const returnFilteredList = () => {
+    switch (todoListFilter) {
+      case "all":
+        return props.todos;
+        break;
 
-  //     case "done":
-  //       return todoList.filter((todo) => todo.done == true);
-  //       break;
+      case "done":
+        return props.todos.filter((todo) => todo.done == true);
+        break;
 
-  //     case "incomplete":
-  //       return todoList.filter((todo) => todo.done == false);
-  //       break;
+      case "incomplete":
+        return props.todos.filter((todo) => todo.done == false);
+        break;
 
-  //     default:
-  //       break;
-  //   }
-  // };
+      default:
+        break;
+    }
+  };
 
   const handleLogout = () => {
     props.logout();
@@ -178,17 +182,17 @@ const Todos: React.FC<ConnectedProps<typeof connectStateAndDispatch>> = (
             text={"Show all"}
           />
         </View>
-        <Button
+        {/* <Button
           width={"auto"}
           bgColor={Colors.$4dp}
           color={"#dc5151"}
           onPress={handleLogout}
           text={"Logout"}
-        />
+        /> */}
 
-        {/* <FlatList
+        <FlatList
           style={{ marginTop: 20, width: "100%", marginHorizontal: "auto" }}
-          keyExtractor={(todo) => todo.id}
+          // keyExtractor={(todo) => todo.userId}
           data={returnFilteredList()}
           renderItem={({ item }) => (
             <View
@@ -223,7 +227,7 @@ const Todos: React.FC<ConnectedProps<typeof connectStateAndDispatch>> = (
               </View>
             </View>
           )} 
-        />*/}
+        />
       </SafeAreaView>
     </Screen>
   );

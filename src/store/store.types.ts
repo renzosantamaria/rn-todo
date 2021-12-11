@@ -4,11 +4,13 @@ import { ThunkAction } from "redux-thunk";
 import { IAuthReduxState } from "./auth/auth.types"
 import { IRequestStateRedux } from "./requestState";
 import { IUserReduxState } from "./user/user.types";
+import { ITodosReduxState } from "./todo/todo.types";
 
 export interface IReduxState {
   requestState: IRequestStateRedux;
   auth: IAuthReduxState;
   user: IUserReduxState;
+  todos: ITodosReduxState
 }
 
 export type AppThunk<ReturnType = void> = ThunkAction<

@@ -5,7 +5,7 @@ import { Ionicons } from "@expo/vector-icons";
 
 import BottomTabBar from "./BottomTabBar/BottomTabBar";
 
-import TodosScreen from "../screens/Todos";
+import TodosScreen from "../screens/StartScreen";
 import LandingScreen from "../screens/LandingScreen";
 import RegisterScren from "../screens/Register"
 import LoginScreen from "../screens/LoginScreen";
