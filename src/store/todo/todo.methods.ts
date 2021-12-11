@@ -39,11 +39,50 @@ const getAllTodos = (): AppThunk => async (dispatch) => {
         )
     }
 }
+const postTodo = (text:string, userId: string): AppThunk => async (dispatch) => {
+    try {
+        if (!text || !userId) {
+            throw new Error("Invalid todo");
+        }
+
+        dispatch(
+            addRequestState({
+                name: "postTodo",
+                state: "LOADING"
+            })
+        )
+        const response = await API.createTodo(text, userId)
+        if (!response) {
+            throw new Error("Failed to post data");
+        }
+        console.log('response: ', response)
+        
+        dispatch(getAllTodos())
+
+        dispatch(
+            addRequestState({
+                name: "postTodo",
+                state: "COMPLETE"
+            })
+        )
+        
+    } catch (error) {
+        console.log(error);
+        
+        dispatch(
+            addRequestState({
+                name: "postTodo",
+                state: "ERROR"
+            })
+        )
+    }
+}
 
 // const logout = (): AppThunk => async (dispatch) => {
 //     dispatch(authReduxSlice.actions.logoutSuccess())
 // }
 
 export default {
-    getAllTodos
+    getAllTodos,
+    postTodo
 }

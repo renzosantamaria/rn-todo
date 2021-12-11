@@ -92,14 +92,14 @@ export const deleteTodoById = async (id:number) => {
     }
 }
 
-export const createTodo = async (text, userId) => {
+export const createTodo = async (text:string, userId: string) => {
     try {
         const response = await API.post('todo', {
             text,
             userId
         })
         if (response.status === 200) {
-            return response.data.rows
+            return response.data
         }else{
             throw new Error('could not create the todo');
         }

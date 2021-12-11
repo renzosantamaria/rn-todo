@@ -44,6 +44,7 @@ const connectStateAndDispatch = connect(
   {
     logout: authMethods.logout,
     getAllTodos: todoMethods.getAllTodos,
+    postTodo: todoMethods.postTodo
   }
 );
 
@@ -56,7 +57,9 @@ const Todos: React.FC<ConnectedProps<typeof connectStateAndDispatch>> = (
   const addTodoHandler = async () => {
     // dispatch(todoActions.addTodo(inputValue))
 
-    const response = await createTodo(inputValue, 2);
+    // const response = await createTodo(inputValue, 2);
+    const response = await props.postTodo(inputValue, 'abcsfsdfsdfd')
+    // props.getAllTodos()
 
     setInputValue("");
     // fetchTodos();
