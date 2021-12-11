@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useNavigation } from "@react-navigation/native";
 import {
   StyleSheet,
   View,
@@ -8,18 +7,9 @@ import {
   FlatList,
   StatusBar,
 } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
-// import { RootState } from "../store";
 // import {
-//   todoActions,
-//   // fetchTodos
-// } from "../store/todo-slice";
-import {
-  fetchAllTodos,
-  createTodo,
-  deleteTodoById,
-  toggleDoneState,
-} from "../API";
+//   toggleDoneState,
+// } from "../API";
 
 import Screen from "../components/Screen/Screen";
 
@@ -44,7 +34,9 @@ const connectStateAndDispatch = connect(
   {
     logout: authMethods.logout,
     getAllTodos: todoMethods.getAllTodos,
-    postTodo: todoMethods.postTodo
+    postTodo: todoMethods.postTodo,
+    deleteTodoById: todoMethods.deleteTodoById,
+    toggleTodoState: todoMethods.toggleTodoStateById
   }
 );
 
@@ -55,32 +47,17 @@ const Todos: React.FC<ConnectedProps<typeof connectStateAndDispatch>> = (
   const [todoListFilter, settodoListFilter] = useState<string>("all");
 
   const addTodoHandler = async () => {
-    // dispatch(todoActions.addTodo(inputValue))
-
-    // const response = await createTodo(inputValue, 2);
-    const response = await props.postTodo(inputValue, 'abcsfsdfsdfd')
-    // props.getAllTodos()
-
+    await props.postTodo(inputValue, 'abcsfsdfsdfd')
     setInputValue("");
-    // fetchTodos();
   };
 
   const deleteTodoHandler = async (id: number) => {
-    // dispatch(todoActions.deleteTodo(id))
-    const response = await deleteTodoById(id);
-    // fetchTodos();
+    await props.deleteTodoById(id)
   };
 
   const handleDoneToggle = async (id: number) => {
-    // dispatch(todoActions.toggleTodoDone(id))
-    const response = await toggleDoneState(id);
-    // fetchTodos();
+    await props.toggleTodoState(id);
   };
-
-  // const fetchTodos = async () => {
-  //   const response = await fetchAllTodos();
-  //   dispatch(todoActions.setTodoList(response));
-  // };
 
   useEffect(() => {
     props.getAllTodos();

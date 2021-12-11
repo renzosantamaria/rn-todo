@@ -82,7 +82,7 @@ export const deleteTodoById = async (id:number) => {
     try {
         const response = await API.delete(`todo/${id}`)
         if (response.status === 200) {
-            return response.data.rows
+            return response.data
         }else{
             throw new Error('could not delete the todo');
         }
@@ -109,12 +109,11 @@ export const createTodo = async (text:string, userId: string) => {
     }
 }
 
-export const toggleDoneState = async (id:number) => {
+export const toggleTodoDoneState = async (id:number) => {
     try {
         const response = await API.patch(`todo/${id}`)
         if (response.status === 200) {
-            return response.data.rows
-        }else{
+            return response.data
             throw new Error('could not toggle done state');
             
         }
