@@ -7,12 +7,14 @@ import { IReduxState } from "./store.types";
 import authReducer from "./auth/auth"
 import requestStateReducer from "./requestState"
 import userReducer from "./user/user"
+import todosReducer from "./todo/todo"
 
 
 const rootReducer: Reducer<IReduxState> = combineReducers<IReduxState>({
   requestState: requestStateReducer,
   auth: authReducer,
-  user: userReducer
+  user: userReducer,
+  todos: todosReducer,
 })
 
 const middlewares = [thunk]

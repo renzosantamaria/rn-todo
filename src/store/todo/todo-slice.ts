@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 // import { AppRegistry } from "react-native";
-import * as API from '../API/index'
+// import * as API from '../API/index'
 
 type Todo = {
     id: string;
