@@ -2,7 +2,7 @@ import * as API from "../../API/index"
 import { addRequestState } from "../requestState";
 import { AppThunk } from "../store.types";
 import { todosReduxSlice } from "./todo";
-
+import { sortArrayByObjKey } from "../../utils/global.functions";
 
 const getAllTodos = (): AppThunk => async (dispatch) => {
     try {
@@ -17,9 +17,9 @@ const getAllTodos = (): AppThunk => async (dispatch) => {
             throw new Error("Could not find todos");
         }
         console.log('response: ', response)
+        const sortedTodos = sortArrayByObjKey('asc', response, 'id')
 
-        dispatch(todosReduxSlice.actions.setTodos(response))
-        // dispatch(authReduxSlice.actions.loginSuccess("testId"))
+        dispatch(todosReduxSlice.actions.setTodos(sortedTodos))
 
         dispatch(
             addRequestState({
@@ -39,7 +39,7 @@ const getAllTodos = (): AppThunk => async (dispatch) => {
         )
     }
 }
-const postTodo = (text:string, userId: string): AppThunk => async (dispatch) => {
+const postTodo = (text:string, userId: number): AppThunk => async (dispatch) => {
     try {
         if (!text || !userId) {
             throw new Error("Invalid todo");
@@ -52,10 +52,11 @@ const postTodo = (text:string, userId: string): AppThunk => async (dispatch) => 
             })
         )
         const response = await API.createTodo(text, userId)
+        
+        // console.log('response: ', response)
         if (!response) {
             throw new Error("Failed to post data");
         }
-        console.log('response: ', response)
         
         dispatch(getAllTodos())
 
@@ -93,7 +94,6 @@ const deleteTodoById = (todoId: number): AppThunk => async (dispatch) => {
         if (!response) {
             throw new Error("Failed delete todo");
         }
-        console.log('response: ', response)
         
         dispatch(getAllTodos())
 
@@ -131,7 +131,6 @@ const toggleTodoStateById = (todoId: number): AppThunk => async (dispatch) => {
         if (!response) {
             throw new Error("Failed delete todo");
         }
-        console.log('response: ', response)
         
         dispatch(getAllTodos())
 

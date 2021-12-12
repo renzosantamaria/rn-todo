@@ -7,9 +7,6 @@ import {
   FlatList,
   StatusBar,
 } from "react-native";
-// import {
-//   toggleDoneState,
-// } from "../API";
 
 import Screen from "../components/Screen/Screen";
 
@@ -47,7 +44,7 @@ const Todos: React.FC<ConnectedProps<typeof connectStateAndDispatch>> = (
   const [todoListFilter, settodoListFilter] = useState<string>("all");
 
   const addTodoHandler = async () => {
-    await props.postTodo(inputValue, 'abcsfsdfsdfd')
+    await props.postTodo(inputValue, props.user.userId!)
     setInputValue("");
   };
 
@@ -80,10 +77,6 @@ const Todos: React.FC<ConnectedProps<typeof connectStateAndDispatch>> = (
       default:
         break;
     }
-  };
-
-  const handleLogout = () => {
-    props.logout();
   };
 
   return (
@@ -162,13 +155,6 @@ const Todos: React.FC<ConnectedProps<typeof connectStateAndDispatch>> = (
             text={"Show all"}
           />
         </View>
-        {/* <Button
-          width={"auto"}
-          bgColor={Colors.$4dp}
-          color={"#dc5151"}
-          onPress={handleLogout}
-          text={"Logout"}
-        /> */}
 
         <FlatList
           style={{ marginTop: 20, width: "100%", marginHorizontal: "auto" }}

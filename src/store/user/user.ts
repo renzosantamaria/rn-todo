@@ -7,7 +7,8 @@ const initialState: IUserReduxState= {
         name: 'your name will appear here after you login',
         lastName: '',
         email: 'default@email.se',
-        token: ''
+        token: '',
+        userId: undefined
     }
 }
 
@@ -19,8 +20,9 @@ export const userReduxSlice = createSlice({
             state.user = {
                 name: action.payload.name || 'No name',
                 lastName: action.payload.lastName || 'no last name',
-                email: action.payload.email || 'no lastname',
-                token: action.payload.token || 'no token'
+                email: action.payload.email || 'no email',
+                token: action.payload.token || 'no token',
+                userId: action.payload.userId
             }
         },
         clearUser(state){
@@ -28,7 +30,8 @@ export const userReduxSlice = createSlice({
                 name: '',
                 lastName: '',
                 email: '',
-                token: ''
+                token: '',
+                userId: undefined
             }
         },
 
