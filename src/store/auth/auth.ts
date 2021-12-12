@@ -3,14 +3,15 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IAuthReduxState } from "./auth.types";
 
 const initialState: IAuthReduxState = {
-    authState: "INITIAL"
+    authState: "INITIAL",
+    userId: undefined
 }
 
 export const authReduxSlice = createSlice({
     name: "auth",
     initialState,
     reducers: {
-        loginSuccess: (state, action: PayloadAction<string>) => {
+        loginSuccess: (state, action: PayloadAction<number>) => {
             state.authState = "LOGGED_IN";
             state.userId = action.payload;
         },

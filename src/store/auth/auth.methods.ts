@@ -24,15 +24,15 @@ const login = (credentials: IloginCredentials): AppThunk => async (dispatch) => 
         if (!response) {
             throw new Error("User not found");
         }
-        console.log('response: ', response)
 
         dispatch(userReduxSlice.actions.setUser({
             name: response.user.surname,
             lastName: response.user.lastName,
             email: response.user.email,
-            token: response.user.token
+            token: response.token,
+            userId: response.user.id
         }))
-        dispatch(authReduxSlice.actions.loginSuccess("testId"))
+        dispatch(authReduxSlice.actions.loginSuccess(response.user.id))
 
         dispatch(
             addRequestState({

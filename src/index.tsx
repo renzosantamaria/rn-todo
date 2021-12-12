@@ -15,8 +15,6 @@ const connectStateAndDispatch = connect(
 )
 
 const App: React.FC<ConnectedProps<typeof connectStateAndDispatch> >= (props) => {
-    console.log(props.authState);
-    
   return(
     <Provider store={ReduxStore}>
       <Navigation isAuthenticated={props.authState === "LOGGED_IN"} ></Navigation>

@@ -3,8 +3,8 @@ import axios, { AxiosError, AxiosResponse } from 'axios'
 
 
 const API = axios.create({
-    // baseURL: 'https://ts-rn-todo.herokuapp.com/api/v1',  // production backend
-    baseURL: 'http://192.168.0.30:5000/api/v1',  // development backend
+    baseURL: 'https://ts-rn-todo.herokuapp.com/api/v1',  // production backend
+    // baseURL: 'http://192.168.0.30:5000/api/v1',  // development backend
   });
 
 export const setDefaultHeaders = token => {
@@ -40,8 +40,6 @@ export const registerUser = async (surname, lastname, email, password) => {
 
         if (response.status === 200) {
             console.log('good request');
-            
-            // setDefaultHeaders(response.data.token)
             return response.data
         }else{
             // return response.data
@@ -92,7 +90,7 @@ export const deleteTodoById = async (id:number) => {
     }
 }
 
-export const createTodo = async (text:string, userId: string) => {
+export const createTodo = async (text:string, userId: number) => {
     try {
         const response = await API.post('todo', {
             text,
@@ -100,6 +98,7 @@ export const createTodo = async (text:string, userId: string) => {
         })
         if (response.status === 200) {
             return response.data
+            
         }else{
             throw new Error('could not create the todo');
         }
