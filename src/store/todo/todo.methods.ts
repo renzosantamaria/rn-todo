@@ -3,6 +3,7 @@ import { addRequestState } from "../requestState";
 import { AppThunk } from "../store.types";
 import { todosReduxSlice } from "./todo";
 import { sortArrayByObjKey } from "../../utils/global.functions";
+import { TodoFirebase } from "./todo.types";
 
 const getAllTodos = (): AppThunk => async (dispatch) => {
     try {
@@ -18,6 +19,24 @@ const getAllTodos = (): AppThunk => async (dispatch) => {
         }
         console.log('response: ', response)
         const sortedTodos = sortArrayByObjKey('asc', response, 'id')
+
+        //
+        const responseFirebase = await fetch('https://rn-todo-bc3f7-default-rtdb.europe-west1.firebasedatabase.app/todos.json')
+        const resDataFirebase = await responseFirebase.json()
+
+        const loadedTodos: TodoFirebase[] = []
+
+        for (const key in resDataFirebase) {
+            loadedTodos.push({
+                id: key,
+                text:resDataFirebase[key].text,
+                done:resDataFirebase[key].done,
+                userId:resDataFirebase[key].userId
+            })
+        }
+        console.log(loadedTodos);
+        
+        //
 
         dispatch(todosReduxSlice.actions.setTodos(sortedTodos))
 
@@ -53,12 +72,29 @@ const postTodo = (text:string, userId: number): AppThunk => async (dispatch) => 
         )
         const response = await API.createTodo(text, userId)
         
-        // console.log('response: ', response)
         if (!response) {
             throw new Error("Failed to post data");
         }
         
         dispatch(getAllTodos())
+
+        //
+        const responseFirebase = await fetch('https://rn-todo-bc3f7-default-rtdb.europe-west1.firebasedatabase.app/todos.json', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                text,
+                userId,
+                done: false
+            })
+        })
+        const resDataFirebase = await responseFirebase.json()
+
+        console.log(resDataFirebase);
+        
+        //
 
         dispatch(
             addRequestState({

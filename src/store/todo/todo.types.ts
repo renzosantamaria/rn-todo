@@ -10,3 +10,11 @@ export type Todo = {
     userId: string,
     updatedAt?: string
 } 
+
+export type TodoFirebase = {
+    id: string,
+    text: string,
+    done: boolean,
+    userId: string,
+    updatedAt?: string
+} 

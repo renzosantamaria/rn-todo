@@ -3,7 +3,6 @@ import { useDispatch } from "react-redux";
 import { StyleSheet, View, Text } from "react-native";
 import Button from "../components/styled-components/Button";
 import Input from "../components/Input";
-// import { userActions } from "../../store/user-slice";
 import * as Colors from "../constants/colors";
 import * as API from "../API";
 
