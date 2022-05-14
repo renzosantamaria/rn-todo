@@ -1,7 +1,5 @@
-// import ContentText from "b3runtime/components/ContentText/ContentText";
 import Icon from "../../components/Icon/Icon";
 import { IconType } from "../../components/Icon/Icon.types";
-// import { ColorType } from "b3runtime/styles/colors";
 import React from "react";
 import { TouchableOpacity, TouchableOpacityProps, Text } from "react-native";
 import styled from "styled-components/native";

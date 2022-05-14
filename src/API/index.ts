@@ -121,3 +121,17 @@ export const toggleTodoDoneState = async (id:number) => {
         
     }
 }
+
+export const changeUserPassword = async (newPassword:string) => {
+    try {
+        const response = await API.patch('/me', {
+            newPassword
+        })
+        if (response.status === 200) {
+            return response.data
+        }
+    } catch (error) {
+        console.log(error);
+        
+    }
+}

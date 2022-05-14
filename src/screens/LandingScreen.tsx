@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import { StyleSheet, SafeAreaView } from "react-native";
-import LoginForm from "../components/UI/LoginForm";
-import RegisterForm from "../components/UI/RegisterForm";
 
 import { RouteProp } from "@react-navigation/native";
 import { UnauthorizedNavigationStack } from "../navigation/Navigation.types";

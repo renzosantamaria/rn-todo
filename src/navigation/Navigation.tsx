@@ -10,6 +10,7 @@ import LandingScreen from "../screens/LandingScreen";
 import RegisterScren from "../screens/Register"
 import LoginScreen from "../screens/LoginScreen";
 import ProfileScreen from "../screens/Profile";
+import ChangePasswordScreen from "../screens/ChangePasswordScreen";
 import ChattScreen from "../screens/ChattScreen"
 
 import {UnauthorizedNavigationStack, AuthorizedNavigationStack, IBottomTabStack} from "./Navigation.types";
@@ -56,6 +57,8 @@ const AuthorizedStack = createStackNavigator<AuthorizedNavigationStack>()
 const Authorized = () => (
   <AuthorizedStack.Navigator screenOptions={{ headerShown: false }}>
   <AuthorizedStack.Screen name="Home" component={BottomTabs} />
+  <AuthorizedStack.Screen name="Password" component={ChangePasswordScreen} />
+  <AuthorizedStack.Screen name="Profile" component={ProfileScreen} />
 </AuthorizedStack.Navigator>
 )
 

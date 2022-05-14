@@ -9,17 +9,13 @@ export type UnauthorizedNavigationStack = {
   
   export type AuthorizedNavigationStack = {
     Home: NavigatorScreenParams<IBottomTabStack>;
-    // Competition: NavigatorScreenParams<ICompetitionStack>;
-    // Freerun: NavigatorScreenParams<IFreerunStack>;
+    Password: undefined;
   };
 
   export type IBottomTabStack = {
     Dashboard: NavigatorScreenParams<IDashboardStack>;
     Chatt: NavigatorScreenParams<IChattStack>
     Profile: NavigatorScreenParams<IProfileStack>;
-    // StartFreerun: NavigatorScreenParams<IStartFreerunStack>;
-    // FindGame: NavigatorScreenParams<IFindGameStack>;
-    // Profile: NavigatorScreenParams<IProfileStack>;
   };
 
   export type IDashboardStack = {
