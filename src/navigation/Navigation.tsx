@@ -58,7 +58,7 @@ const Authorized = () => (
   <AuthorizedStack.Navigator screenOptions={{ headerShown: false }}>
   <AuthorizedStack.Screen name="Home" component={BottomTabs} />
   <AuthorizedStack.Screen name="Password" component={ChangePasswordScreen} />
-  <AuthorizedStack.Screen name="Profile" component={ProfileScreen} />
+  {/* <AuthorizedStack.Screen name="Profile" component={ProfileScreen} /> */}
 </AuthorizedStack.Navigator>
 )
 

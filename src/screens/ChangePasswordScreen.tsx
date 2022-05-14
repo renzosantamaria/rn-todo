@@ -9,7 +9,7 @@ import userMethods from "../store/user/user.methods";
 import Screen from "../components/Screen/Screen";
 import { changeUserPassword } from "../API";
 
-import { RouteProp } from "@react-navigation/native";
+// import { RouteProp } from "@react-navigation/native";
 import { AuthorizedNavigationStack } from "../navigation/Navigation.types";
 import { StackNavigationProp } from "@react-navigation/stack";
 
@@ -22,7 +22,6 @@ const connectStateAndDispatch = connect(
 
 interface IProps {
   showRegister: () => void;
-  route: RouteProp<AuthorizedNavigationStack, "Home">;
   navigation: StackNavigationProp<AuthorizedNavigationStack, "Home">;
 }
 
@@ -45,8 +44,13 @@ const ChangePasswordForm: React.FC<
   return (
     <Screen
       bgcolor="black"
-      header={{ hide: false, color: "#fff" }}
+      header={{
+        hide: false,
+        color: "#fff",
+        backButtonText:"Profile"
+      }}
       transparentBackground={true}
+      
       // showLoadingIndicator={props.isLoginGoogleLoading}
       // loadingText="Logging in..."
       ignorepadding={true}
