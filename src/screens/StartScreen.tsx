@@ -3,7 +3,7 @@ import {
   StyleSheet,
   View,
   Text,
-  SafeAreaView,
+  // SafeAreaView,
   FlatList,
   StatusBar,
 } from "react-native";
@@ -17,6 +17,7 @@ import userSelectors from "../store/user/user.selectors";
 import Input from "../components/Input";
 import Button from "../components/styled-components/Button";
 import Image from "../components/styled-components/Image";
+import { SafeAreaView } from "../components/styled-components/wrapper";
 import IconButton from "../components/styled-components/IconButton";
 import * as Colors from "../constants/colors";
 import authMethods from "../store/auth/auth.methods";
@@ -88,7 +89,7 @@ const Todos: React.FC<ConnectedProps<typeof connectStateAndDispatch>> = (
       // loadingText="Logging in..."
       ignorepadding={true}
     >
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView>
         <StatusBar hidden={false} backgroundColor={"black"} />
         <View style={{ marginTop: 30, alignItems: "center" }}>
           <Text style={styles.welcome}> Welcome, {props.user.name} </Text>
@@ -157,7 +158,7 @@ const Todos: React.FC<ConnectedProps<typeof connectStateAndDispatch>> = (
         </View>
 
         <FlatList
-          style={{ marginTop: 20, width: "100%", marginHorizontal: "auto" }}
+          style={ styles.flatlist}
           // keyExtractor={(todo) => todo.userId}
           data={returnFilteredList()}
           renderItem={({ item }) => (
@@ -200,32 +201,27 @@ const Todos: React.FC<ConnectedProps<typeof connectStateAndDispatch>> = (
 };
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: Colors.background,
-    color: "white",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    flex: 1,
-    height: "100%",
-    width: "auto",
-    padding: 0
+  flatlist:{
+    marginTop: 20,
+    marginBottom: 40,
+    width: "100%",
+    marginHorizontal: "auto"
   },
   todoItemWrapper: {
     color: "black",
     paddingVertical: 6,
     paddingHorizontal: 14,
     marginTop: 12,
+    marginRight: "auto",
+    marginLeft: "auto",
     borderRadius: 20,
     flexDirection: "row",
     justifyContent: "space-between",
     width: "80%",
-    marginRight: "auto",
-    marginLeft: "auto",
   },
   welcome: {
     fontSize: 30,
-    color: "white",
+    color: Colors.background,
     marginVertical: 20,
   },
 });

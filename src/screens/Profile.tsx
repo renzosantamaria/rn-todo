@@ -14,6 +14,10 @@ import authMethods from "../store/auth/auth.methods";
 import todoSelectors from "../store/todo/todo.selectors";
 import todoMethods from "../store/todo/todo.methods";
 
+import { RouteProp } from "@react-navigation/native";
+import { AuthorizedNavigationStack } from "../navigation/Navigation.types";
+import { StackNavigationProp } from "@react-navigation/stack";
+
 const connectStateAndDispatch = connect(
     (state: IReduxState) => ({
       user: userSelectors.userStateSelector(state),
@@ -25,17 +29,33 @@ const connectStateAndDispatch = connect(
     }
   );
 
+interface Props {
+  route: RouteProp<AuthorizedNavigationStack, "Password">;
+  navigation: StackNavigationProp<AuthorizedNavigationStack, "Password">;
+}
 
-const ProfileScreen:React.FC<ConnectedProps<typeof connectStateAndDispatch>> = (
+const ProfileScreen:React.FC<ConnectedProps<typeof connectStateAndDispatch> & Props> = (
     props
   ) => {
 
     const handleLogout = () => {
-        props.logout();
+      props.logout();
     };
+
+    const navigateToChangePassword = () => {
+      props.navigation.navigate("Password")
+    }
+
     return(
         <SafeAreaView>
             <Text>Hello from the profile Screen</Text>
+            <Button
+                width={"auto"}
+                bgColor={Colors.$4dp}
+                color={"#5a78c6"}
+                onPress={navigateToChangePassword}
+                text={"Change password"}
+            />
             <Button
                 width={"auto"}
                 bgColor={Colors.$4dp}

@@ -9,6 +9,7 @@ export type UnauthorizedNavigationStack = {
   
   export type AuthorizedNavigationStack = {
     Home: NavigatorScreenParams<IBottomTabStack>;
+    Password: undefined;
   };
 
   export type IBottomTabStack = {
