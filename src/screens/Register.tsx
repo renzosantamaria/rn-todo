@@ -38,7 +38,7 @@ const RegisterForm: React.FC<IProps> = (props) => {
         <Text style={styles.heading}>Register </Text>
         <Input
           style={"inputLight"}
-          placeholder={"name"}
+          placeholder={"Name"}
           value={name}
           onChangeText={(text) => setName(text)}
         />
