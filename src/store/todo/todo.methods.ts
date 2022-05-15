@@ -13,7 +13,7 @@ const getAllTodos = (): AppThunk => async (dispatch) => {
                 state: "LOADING"
             })
         )
-        const response = await API.fetchAllTodos()
+        const response = await API.fetchUserTodos()
         if (!response) {
             throw new Error("Could not find todos");
         }

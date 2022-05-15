@@ -63,13 +63,21 @@ export const fetchAllTodos = async () => {
         }else{
             throw new Error('couldnt fetch the todos, try again later');
         }
-        // return [{
-        //         id: 1,
-        //         text: "Improving this app :)",
-        //         done: false,
-        //         userId: "asd1",
-        //         updatedAt: "Sat 11 Dec"
-        //     }]
+        
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const fetchUserTodos = async () => {
+
+    try {
+        const response = await API.get('user-todos')
+        if (response.status === 200) {
+            return response.data.rows
+        }else{
+            throw new Error('couldnt fetch the todos, try again later');
+        }
         
     } catch (error) {
         console.log(error)
