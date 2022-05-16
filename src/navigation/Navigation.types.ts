@@ -10,11 +10,12 @@ export type UnauthorizedNavigationStack = {
   export type AuthorizedNavigationStack = {
     Home: NavigatorScreenParams<IBottomTabStack>;
     Password: undefined;
+    Chat: undefined;
   };
 
   export type IBottomTabStack = {
     Dashboard: NavigatorScreenParams<IDashboardStack>;
-    Chatt: NavigatorScreenParams<IChattStack>
+    ChatList: NavigatorScreenParams<IChattStack>
     Profile: NavigatorScreenParams<IProfileStack>;
   };
 

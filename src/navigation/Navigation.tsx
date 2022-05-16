@@ -11,7 +11,7 @@ import RegisterScren from "../screens/Register"
 import LoginScreen from "../screens/LoginScreen";
 import ProfileScreen from "../screens/Profile";
 import ChangePasswordScreen from "../screens/ChangePasswordScreen";
-import ChattScreen from "../screens/ChattScreen"
+import ChatListScreen from "../screens/ChatListScreen"
 
 import {UnauthorizedNavigationStack, AuthorizedNavigationStack, IBottomTabStack} from "./Navigation.types";
 
@@ -24,6 +24,7 @@ import React from "react";
 import { Host } from "react-native-portalize"
 
 import * as Colors from '../constants/colors'
+import ChatScreen from "../screens/ChatScreen";
 
 interface IAppNavigation {
   isAuthenticated: boolean;
@@ -58,7 +59,7 @@ const Authorized = () => (
   <AuthorizedStack.Navigator screenOptions={{ headerShown: false }}>
   <AuthorizedStack.Screen name="Home" component={BottomTabs} />
   <AuthorizedStack.Screen name="Password" component={ChangePasswordScreen} />
-  {/* <AuthorizedStack.Screen name="Profile" component={ProfileScreen} /> */}
+  <AuthorizedStack.Screen name="Chat" component={ChatScreen} />
 </AuthorizedStack.Navigator>
 )
 
@@ -67,7 +68,7 @@ const renderBottomTabBar = (props) => <BottomTabBar {...props} />;
 const BottomTabs = () => (
   <BottomTabStack.Navigator tabBar={renderBottomTabBar} >
     <BottomTabStack.Screen name="Dashboard" component={TodosScreen} />
-    <BottomTabStack.Screen name="Chatt" component={ChattScreen} />
+    <BottomTabStack.Screen name="ChatList" component={ChatListScreen} />
     <BottomTabStack.Screen name="Profile" component={ProfileScreen} />
   </BottomTabStack.Navigator>
 )
