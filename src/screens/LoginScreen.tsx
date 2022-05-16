@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { connect, ConnectedProps } from "react-redux";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, KeyboardAvoidingView } from "react-native";
 import Button from "../components/styled-components/Button";
 import Input from "../components/Input";
 import * as Colors from "../constants/colors";
@@ -45,28 +45,30 @@ const LoginForm: React.FC<
       // loadingText="Logging in..."
       ignorepadding={true}
     >
-      <View style={styles.loginForm}>
-        <Text style={styles.heading}>Login </Text>
-        <Input
-          style={"inputLight"}
-          placeholder={"Email"}
-          value={email}
-          onChangeText={(text) => setEmail(text)}
-        />
-        <Input
-          style={"inputLight"}
-          placeholder={"Password"}
-          value={password}
-          onChangeText={(text) => setPassword(text)}
-        />
-        <Button
-          width={"60%"}
-          bgColor={Colors.accentColor}
-          color={"#fff"}
-          onPress={handleLogin}
-          text={"LOGIN"}
-        />
-      </View>
+      <KeyboardAvoidingView style={{ flex: 1, flexDirection: 'column',justifyContent: 'center',}} behavior="padding" enabled   keyboardVerticalOffset={100}>
+        <View style={styles.loginForm}>
+          <Text style={styles.heading}>Login </Text>
+          <Input
+            style={"inputLight"}
+            placeholder={"Email"}
+            value={email}
+            onChangeText={(text) => setEmail(text)}
+          />
+          <Input
+            style={"inputLight"}
+            placeholder={"Password"}
+            value={password}
+            onChangeText={(text) => setPassword(text)}
+          />
+          <Button
+            width={"60%"}
+            bgColor={Colors.accentColor}
+            color={"#fff"}
+            onPress={handleLogin}
+            text={"LOGIN"}
+          />
+        </View>
+      </KeyboardAvoidingView>
     </Screen>
   );
 };
