@@ -129,6 +129,24 @@ export const createTodo = async (text:string, userId: number) => {
     }
 }
 
+export const createMessage = async ( chatId: number, content:string) => {
+    try {
+        const response = await API.post('message', {
+            chatId,
+            content
+        })
+        if (response.status === 200) {
+            return response.data
+            
+        }else{
+            throw new Error('could not create the todo');
+        }
+
+    } catch (error) {
+        console.log(error);        
+    }
+}
+
 export const toggleTodoDoneState = async (id:number) => {
     try {
         const response = await API.patch(`todo/${id}`)
