@@ -4,83 +4,60 @@ import IconButton from "../components/styled-components/IconButton"
 import * as API from "../API";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { AuthorizedNavigationStack } from "../navigation/Navigation.types";
+import { connect, ConnectedProps } from "react-redux";
+import { IReduxState } from "../store/store.types";
+import userSelectors from "../store/user/user.selectors";
+import conversationSelectors from "../store/conversation/conversation.selectors";
+import conversationMethods from "../store/conversation/conversation.methods";
 
+
+const connectStateAndDispatch = connect(
+    (state: IReduxState) => ({
+      user: userSelectors.userStateSelector(state),
+      conversations: conversationSelectors.conversationsStateSelector(state)
+    }),
+    {
+        getConversations: conversationMethods.getConversations,
+    }
+  );
 interface IProps {
     showRegister: () => void;
     navigation: StackNavigationProp<AuthorizedNavigationStack, "Home">;
   }
   
-const ChatListScreen: React.FC<IProps> = (props) => {
-    const [chatConversations, setChatConversations] = useState([])
+const ChatListScreen: React.FC<ConnectedProps<typeof connectStateAndDispatch> & IProps> = (props) => {
+    // const [chatConversations, setChatConversations] = useState([])
 
-    const fetchChats = async() => {
-        let data = await API.fetchUserConversations()
-        !data && console.log('que onda wey')
-        console.log('fetch chats: '+data[0]);
-        setChatConversations(data)
-    }
+    useEffect(() => {
+        props.getConversations()
+    }, [])
 
-    // useEffect(() => {
-    //     const fetchConversations = async () => {
-    //         const data = await API.fetchUserConversations()
-    //         console.log(data);
-            
-    //         setChatConversations(data) 
-    //     }
-    //     fetchConversations()
-    //     .catch(console.error)
-    // }, [])
-
-    const handleNavigation = (chat) => {
-        props.navigation.navigate('Chat', {chat})
+    const handleNavigation = (conversationId) => {
+        props.navigation.navigate('Chat', {conversationId})
     }
 
     return(
         <>
-            <Text> Chatt screen </Text>
             <IconButton
                 color={"#f28080"}
-                name={"delete"}
-                onPress={() => fetchChats()}
+                name={"refresh"}
+                // onPress={() => fetchChats()}
             />
-            <Text> {chatConversations.length} </Text>
-            <Text> {chatConversations.length && chatConversations[1].messages[0].content} </Text>
-            
-            {/* <FlatList
-                // keyExtractor={(todo) => todo.userId}
-                data={chatConversations[1].messages}
-                renderItem={({ item }) => (
-                    <View
-                    style={{
-                        
-                        backgroundColor: `${true ? "#222" : "#222"}`,
-                    }}
-                    >
-                    <Text
-                        style={{
-                        color: true ? "#8f8f8f" : "#fff",
-                        textDecorationLine: false ? "line-through" : "none",
-                        }}
-                    >
-                        {item.content}
-                    </Text>
-                    
-                    </View>
-                )} 
-            /> */}
             <FlatList
                 // keyExtractor={(todo) => todo.userId}
-                data={chatConversations}
+                data={props.conversations}
                 renderItem={({ item }) => (
-                    <View style={{ backgroundColor: `${true ? "#222" : "#222"}`}}>
-                        <TouchableOpacity onPress={() => handleNavigation(item)}>
+                    <View style={{ backgroundColor: `${true ? "#bbbbbb" : "#222"}`}}>
+                        <TouchableOpacity onPress={() => handleNavigation(item.id)}>
                             <Text
                                 style={{
-                                color: true ? "#8f8f8f" : "#fff",
+                                color: true ? "#242424" : "#fff",
                                 textDecorationLine: false ? "line-through" : "none",
+                                borderWidth: 1,
+                                padding: 5
                                 }}
                             >
-                                {item.name}
+                                {item.recipientNames.join(', ')}
                             </Text>
                         </TouchableOpacity>
                     </View>
@@ -89,4 +66,4 @@ const ChatListScreen: React.FC<IProps> = (props) => {
         </>
     )
 } 
-export default ChatListScreen
+export default connectStateAndDispatch(ChatListScreen)
