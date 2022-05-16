@@ -3,8 +3,8 @@ import axios, { AxiosError, AxiosResponse } from 'axios'
 
 
 const API = axios.create({
-    baseURL: 'https://ts-rn-todo.herokuapp.com/api/v1',  // production backend
-    // baseURL: 'http://192.168.0.30:5000/api/v1',  // development backend
+    // baseURL: 'https://ts-rn-todo.herokuapp.com/api/v1',  // production backend
+    baseURL: 'http://192.168.0.31:5000/api/v1',  // development backend
   });
 
 export const setDefaultHeaders = token => {
@@ -63,14 +63,35 @@ export const fetchAllTodos = async () => {
         }else{
             throw new Error('couldnt fetch the todos, try again later');
         }
-        // return [{
-        //         id: 1,
-        //         text: "Improving this app :)",
-        //         done: false,
-        //         userId: "asd1",
-        //         updatedAt: "Sat 11 Dec"
-        //     }]
         
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const fetchUserTodos = async () => {
+
+    try {
+        const response = await API.get('user-todos')
+        if (response.status === 200) {
+            return response.data.rows
+        }else{
+            throw new Error('couldnt fetch the todos, try again later');
+        }
+        
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const fetchUserConversations = async () => {
+    try {
+        const response = await API.get('user-conversations')
+        if (response.status === 200) {
+            return response.data
+        }else{
+            throw new Error('couldnt fetch the conversations, try again later');
+        }
     } catch (error) {
         console.log(error)
     }
@@ -95,6 +116,24 @@ export const createTodo = async (text:string, userId: number) => {
         const response = await API.post('todo', {
             text,
             userId
+        })
+        if (response.status === 200) {
+            return response.data
+            
+        }else{
+            throw new Error('could not create the todo');
+        }
+
+    } catch (error) {
+        console.log(error);        
+    }
+}
+
+export const createMessage = async ( chatId: number, content:string) => {
+    try {
+        const response = await API.post('message', {
+            chatId,
+            content
         })
         if (response.status === 200) {
             return response.data

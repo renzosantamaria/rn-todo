@@ -3,6 +3,7 @@ import { TextInput, StyleSheet } from "react-native";
 
 interface IProps {
     placeholder: string;
+    placeholderColor?: string;
     value: string;
     onChangeText: (text:string) => void;
     style: string;
@@ -10,12 +11,13 @@ interface IProps {
     onKeyPress?: (e:any) => void;
 }
 
-const Input: React.FC <IProps> = ({placeholder, value, onChangeText, onSubmitEditing, onKeyPress, style}) => {
+const Input: React.FC <IProps> = ({placeholder, placeholderColor, value, onChangeText, onSubmitEditing, onKeyPress, style}) => {
  return (
     <TextInput
         style={styles[style]}
         value={value}
         placeholder={placeholder}
+        placeholderTextColor={placeholderColor || 'grey'}
         onSubmitEditing={onSubmitEditing}
         onChangeText={onChangeText}
         // onKeyPress={(e) => onKeyPress(e)}
@@ -35,7 +37,7 @@ const styles = StyleSheet.create({
         borderStyle: 'solid',
         borderWidth: 1,
         marginVertical: 20,
-        marginHorizontal: 10
+        marginHorizontal: 10,
       },
     inputDark: {
         backgroundColor: 'white',

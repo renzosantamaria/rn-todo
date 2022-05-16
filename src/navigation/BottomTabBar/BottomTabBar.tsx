@@ -44,8 +44,8 @@ const BottomTabBar: React.FC<object & BottomTabBarProps> = (props) => {
       label: "Start",
       icon: "home",
     },
-    Chatt: {
-      label: "Chatt",
+    ChatList: {
+      label: "Chat",
       icon: "facebook-messenger"
     },
     // StartFreerun: {
