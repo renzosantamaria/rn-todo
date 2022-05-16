@@ -3,8 +3,8 @@ import axios, { AxiosError, AxiosResponse } from 'axios'
 
 
 const API = axios.create({
-    baseURL: 'https://ts-rn-todo.herokuapp.com/api/v1',  // production backend
-    // baseURL: 'http://192.168.0.30:5000/api/v1',  // development backend
+    // baseURL: 'https://ts-rn-todo.herokuapp.com/api/v1',  // production backend
+    baseURL: 'http://192.168.0.31:5000/api/v1',  // development backend
   });
 
 export const setDefaultHeaders = token => {
@@ -79,6 +79,19 @@ export const fetchUserTodos = async () => {
             throw new Error('couldnt fetch the todos, try again later');
         }
         
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const fetchUserConversations = async () => {
+    try {
+        const response = await API.get('user-conversations')
+        if (response.status === 200) {
+            return response.data
+        }else{
+            throw new Error('couldnt fetch the conversations, try again later');
+        }
     } catch (error) {
         console.log(error)
     }
