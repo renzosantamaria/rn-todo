@@ -8,6 +8,8 @@ import authReducer from "./auth/auth"
 import requestStateReducer from "./requestState"
 import userReducer from "./user/user"
 import todosReducer from "./todo/todo"
+import messagesReducer from "./message/message"
+import conversationsReducer from "./conversation/conversation"
 
 
 const rootReducer: Reducer<IReduxState> = combineReducers<IReduxState>({
@@ -15,6 +17,8 @@ const rootReducer: Reducer<IReduxState> = combineReducers<IReduxState>({
   auth: authReducer,
   user: userReducer,
   todos: todosReducer,
+  messages: messagesReducer,
+  conversations: conversationsReducer,
 })
 
 const middlewares = [thunk]

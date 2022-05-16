@@ -5,12 +5,16 @@ import { IAuthReduxState } from "./auth/auth.types"
 import { IRequestStateRedux } from "./requestState";
 import { IUserReduxState } from "./user/user.types";
 import { ITodosReduxState } from "./todo/todo.types";
+import { IMessagesReduxState } from "./message/message.types";
+import { IConversationsReduxState } from "./conversation/conversation.types";
 
 export interface IReduxState {
   requestState: IRequestStateRedux;
   auth: IAuthReduxState;
   user: IUserReduxState;
-  todos: ITodosReduxState
+  todos: ITodosReduxState;
+  messages: IMessagesReduxState;
+  conversations: IConversationsReduxState;
 }
 
 export type AppThunk<ReturnType = void> = ThunkAction<
