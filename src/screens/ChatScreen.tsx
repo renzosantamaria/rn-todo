@@ -1,21 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { io } from "socket.io-client";
 import { FlatList, Text, View, TouchableOpacity, StyleSheet, KeyboardAvoidingView } from "react-native";
-import IconButton from "../components/styled-components/IconButton";
-import * as API from "../API";
 import Screen from "../components/Screen/Screen";
 import { StackNavigationProp } from "@react-navigation/stack";
 import {
   AuthorizedNavigationStack,
-  UnauthorizedNavigationStack,
   IBottomTabStack,
 } from "../navigation/Navigation.types";
 import Input from "../components/Input";
 import { RouteProp } from "@react-navigation/native";
 import { connect, ConnectedProps } from "react-redux";
-import authMethods from "../store/auth/auth.methods";
 import { IReduxState } from "../store/store.types";
-import todoMethods from "../store/todo/todo.methods";
-import todoSelectors from "../store/todo/todo.selectors";
 import userSelectors from "../store/user/user.selectors";
 import messageMethods from "../store/message/message.methods";
 import conversationMethods from "../store/conversation/conversation.methods";
@@ -45,6 +40,18 @@ const ChattScreen: React.FC<ConnectedProps<typeof connectStateAndDispatch> & IPr
   const [conversation, setConversation] = useState<Conversation>()
   const { conversationId } = props.route.params;
   const myUserId = props.user.userId
+
+
+  const socketRef = useRef()
+  useEffect(() => {
+      socketRef.current = io('http://192.168.0.40:5001')
+      socketRef.current.on('messageCreated', (msg) => {
+      props.getConversations();
+      }) 
+      return () => {
+      socketRef.current.disconnect()
+      }
+  }, [props.conversations])
 
   useEffect(() => {
     let currentConversation = props.conversations.find(chat => chat.id == conversationId)
