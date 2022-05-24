@@ -4,7 +4,7 @@ import axios, { AxiosError, AxiosResponse } from 'axios'
 
 const API = axios.create({
     // baseURL: 'https://ts-rn-todo.herokuapp.com/api/v1',  // production backend
-    baseURL: 'http://192.168.0.31:5000/api/v1',  // development backend
+    baseURL: 'http://192.168.0.40:5001/api/v1',  // development backend
   });
 
 export const setDefaultHeaders = token => {
@@ -42,10 +42,7 @@ export const registerUser = async (surname, lastname, email, password) => {
             console.log('good request');
             return response.data
         }else{
-            // return response.data
-            
             throw new Error("could not create the user");
-            
         }
 
     } catch (error) {
