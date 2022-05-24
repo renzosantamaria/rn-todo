@@ -1,7 +1,5 @@
 import React, {useState, useEffect} from "react"
 import { FlatList, Text, View, TouchableOpacity } from "react-native"
-import IconButton from "../components/styled-components/IconButton"
-import * as API from "../API";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { AuthorizedNavigationStack } from "../navigation/Navigation.types";
 import { connect, ConnectedProps } from "react-redux";
@@ -26,23 +24,18 @@ interface IProps {
   }
   
 const ChatListScreen: React.FC<ConnectedProps<typeof connectStateAndDispatch> & IProps> = (props) => {
-    // const [chatConversations, setChatConversations] = useState([])
-
+    const [chatConversations, setChatConversations] = useState([])
+    
     useEffect(() => {
         props.getConversations()
     }, [])
-
+    
     const handleNavigation = (conversationId) => {
         props.navigation.navigate('Chat', {conversationId})
     }
 
     return(
         <>
-            <IconButton
-                color={"#f28080"}
-                name={"refresh"}
-                // onPress={() => fetchChats()}
-            />
             <FlatList
                 // keyExtractor={(todo) => todo.userId}
                 data={props.conversations}
