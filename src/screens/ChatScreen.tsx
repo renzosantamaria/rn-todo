@@ -44,7 +44,8 @@ const ChattScreen: React.FC<ConnectedProps<typeof connectStateAndDispatch> & IPr
 
   const socketRef = useRef()
   useEffect(() => {
-      socketRef.current = io('http://192.168.0.40:5001')
+      // socketRef.current = io('http://192.168.0.40:5001') // dev
+      socketRef.current = io('wss://ts-rn-todo.herokuapp.com') //prod
       socketRef.current.on('messageCreated', (msg) => {
       props.getConversations();
       }) 
