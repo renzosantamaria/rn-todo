@@ -3,14 +3,15 @@ import axios, { AxiosError, AxiosResponse } from 'axios'
 
 
 const API = axios.create({
-    baseURL: 'https://ts-rn-todo.herokuapp.com/api/v1',  // production backend
-    // baseURL: 'http://192.168.0.40:5001/api/v1',  // development backend
+    // baseURL: 'https://ts-rn-todo.herokuapp.com/api/v1',  // production backend
+    baseURL: 'http://192.168.0.40:5001/api/v1',  // development backend
   });
 
 export const setDefaultHeaders = token => {
     API.defaults.headers.common['Authorization'] = `Bearer ${token}`
 }
 
+//USER
 export const login = async (email, password) => {
     try {
         const response = await API.post('login', {
@@ -28,7 +29,6 @@ export const login = async (email, password) => {
         console.log(error)
     }
 }
-
 export const registerUser = async (surname, lastname, email, password) => {
     try {
         const response = await API.post('register', {
@@ -50,7 +50,21 @@ export const registerUser = async (surname, lastname, email, password) => {
         
     }
 }
+export const changeUserPassword = async (newPassword:string) => {
+    try {
+        const response = await API.patch('/me', {
+            newPassword
+        })
+        if (response.status === 200) {
+            return response.data
+        }
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
 
+//TODOS
 export const fetchAllTodos = async () => {
 
     try {
@@ -65,7 +79,6 @@ export const fetchAllTodos = async () => {
         console.log(error)
     }
 }
-
 export const fetchUserTodos = async () => {
 
     try {
@@ -80,20 +93,6 @@ export const fetchUserTodos = async () => {
         console.log(error)
     }
 }
-
-export const fetchUserConversations = async () => {
-    try {
-        const response = await API.get('user-conversations')
-        if (response.status === 200) {
-            return response.data
-        }else{
-            throw new Error('couldnt fetch the conversations, try again later');
-        }
-    } catch (error) {
-        console.log(error)
-    }
-}
-
 export const deleteTodoById = async (id:number) => {
     try {
         const response = await API.delete(`todo/${id}`)
@@ -107,7 +106,6 @@ export const deleteTodoById = async (id:number) => {
         console.log(error);        
     }
 }
-
 export const createTodo = async (text:string, userId: number) => {
     try {
         const response = await API.post('todo', {
@@ -125,7 +123,50 @@ export const createTodo = async (text:string, userId: number) => {
         console.log(error);        
     }
 }
+export const toggleTodoDoneState = async (id:number) => {
+    try {
+        const response = await API.patch(`todo/${id}`)
+        if (response.status === 200) {
+            return response.data
+            throw new Error('could not toggle done state');
+            
+        }
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
 
+//CONVERSATION
+export const fetchUserConversations = async () => {
+    try {
+        const response = await API.get('user-conversations')
+        if (response.status === 200) {
+            return response.data
+        }else{
+            throw new Error('couldnt fetch the conversations, try again later');
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
+export const createConversation = async ( membersId: string, name:string) => {
+    try {
+        const response = await API.post('conversation', {
+            membersId,
+            name
+        })
+        if (response.status === 200) {
+            return response.data
+            
+        }else{
+            throw new Error('could not create the conversation');
+        }
+
+    } catch (error) {
+        console.log(error);        
+    }
+}
 export const createMessage = async ( chatId: number, content:string) => {
     try {
         const response = await API.post('message', {
@@ -141,33 +182,5 @@ export const createMessage = async ( chatId: number, content:string) => {
 
     } catch (error) {
         console.log(error);        
-    }
-}
-
-export const toggleTodoDoneState = async (id:number) => {
-    try {
-        const response = await API.patch(`todo/${id}`)
-        if (response.status === 200) {
-            return response.data
-            throw new Error('could not toggle done state');
-            
-        }
-    } catch (error) {
-        console.log(error);
-        
-    }
-}
-
-export const changeUserPassword = async (newPassword:string) => {
-    try {
-        const response = await API.patch('/me', {
-            newPassword
-        })
-        if (response.status === 200) {
-            return response.data
-        }
-    } catch (error) {
-        console.log(error);
-        
     }
 }
