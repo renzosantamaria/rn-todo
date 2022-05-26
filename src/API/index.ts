@@ -29,6 +29,20 @@ export const login = async (email, password) => {
         console.log(error)
     }
 }
+export const fetchAllUsers = async () => {
+
+    try {
+        const response = await API.get('getusers')
+        if (response.status === 200) {
+            return response.data.rows
+        }else{
+            throw new Error('couldnt fetch the users, try again later');
+        }
+        
+    } catch (error) {
+        console.log(error)
+    }
+}
 export const registerUser = async (surname, lastname, email, password) => {
     try {
         const response = await API.post('register', {
