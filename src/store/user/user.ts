@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { User, IUserReduxState } from "./user.types"
+import { User, IUserReduxState, UserFromUsersList } from "./user.types"
 
 
 const initialState: IUserReduxState= {
@@ -9,7 +9,8 @@ const initialState: IUserReduxState= {
         email: 'default@email.se',
         token: '',
         userId: undefined
-    }
+    },
+    userList: []
 }
 
 export const userReduxSlice = createSlice({
@@ -25,6 +26,9 @@ export const userReduxSlice = createSlice({
                 userId: action.payload.userId
             }
         },
+        setUserList(state, action: PayloadAction<UserFromUsersList[]>){
+            state.userList = action.payload
+        },
         clearUser(state){
             state.user = {
                 name: '',
@@ -33,6 +37,9 @@ export const userReduxSlice = createSlice({
                 token: '',
                 userId: undefined
             }
+        },
+        clearUserList(state){
+            state.userList = []
         },
 
     },
