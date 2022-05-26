@@ -16,6 +16,7 @@ const connectStateAndDispatch = connect(
     }),
     {
         getConversations: conversationMethods.getConversations,
+        createConversation: conversationMethods.createConversation
     }
   );
 interface IProps {
@@ -32,6 +33,13 @@ const ChatListScreen: React.FC<ConnectedProps<typeof connectStateAndDispatch> & 
     
     const handleNavigation = (conversationId) => {
         props.navigation.navigate('Chat', {conversationId})
+    }
+
+    const handleCreateChat = () => {
+        console.log('create new chat!')
+        props.user.userId
+        let membersId = `${props.user.userId}, 1`
+        props.createConversation(membersId, 'test conversation')
     }
 
     return(
@@ -56,6 +64,18 @@ const ChatListScreen: React.FC<ConnectedProps<typeof connectStateAndDispatch> & 
                     </View>
                 )} 
             />
+            <TouchableOpacity onPress={handleCreateChat}>
+                <Text
+                    style={{
+                    color: true ? "#242424" : "#fff",
+                    textDecorationLine: false ? "line-through" : "none",
+                    borderWidth: 1,
+                    padding: 5
+                    }}
+                >
+                    Create new chat
+                </Text>
+            </TouchableOpacity>
         </>
     )
 } 
