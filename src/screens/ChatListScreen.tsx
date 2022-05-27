@@ -1,5 +1,4 @@
-import React, {useState, useEffect, useRef} from "react"
-import { io } from "socket.io-client";
+import React, {useState, useEffect} from "react"
 import { FlatList, Text, View, TouchableOpacity, StyleSheet } from "react-native"
 import Modal from "react-native-modal"
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -33,28 +32,11 @@ const ChatListScreen: React.FC<ConnectedProps<typeof connectStateAndDispatch> & 
     const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
     const [selectedUserId, setSelectedUserId] = useState<number | null>(null)
     const [unreadMessages, setUndreadMessages] = useState<boolean>(false)
-    const socketRef = useRef()
 
-    
     useEffect(() => {
         props.getConversations()
         props.getExistingUsers()
     }, [])
-
-    useEffect(() => {
-        socketRef.current = io('http://192.168.0.40:5001') // dev
-        // socketRef.current = io('wss://ts-rn-todo.herokuapp.com') //prod
-        socketRef.current.on('conversationCreated', (msg) => {
-            console.log('getting prop conversationCreated!!!!');
-            props.getConversations();
-        }) 
-        socketRef.current.on('messageCreated', (msg) => {
-            props.getConversations();
-        }) 
-        return () => {
-        socketRef.current.disconnect()
-        }
-    }, [props.conversations])
     
     const handleNavigation = (conversationId) => {
         props.navigation.navigate('Chat', {conversationId})

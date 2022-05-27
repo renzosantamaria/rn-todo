@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
-import { io } from "socket.io-client";
+import React, { useState, useEffect } from "react";
 import { FlatList, Text, View, TouchableOpacity, StyleSheet, KeyboardAvoidingView } from "react-native";
 import Screen from "../components/Screen/Screen";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -41,18 +40,6 @@ const ChattScreen: React.FC<ConnectedProps<typeof connectStateAndDispatch> & IPr
   const { conversationId } = props.route.params;
   const myUserId = props.user.userId
 
-
-  const socketRef = useRef()
-  useEffect(() => {
-      socketRef.current = io('http://192.168.0.40:5001') // dev
-      // socketRef.current = io('wss://ts-rn-todo.herokuapp.com') //prod
-      socketRef.current.on('messageCreated', (msg) => {
-      props.getConversations();
-      }) 
-      return () => {
-      socketRef.current.disconnect()
-      }
-  }, [props.conversations])
 
   useEffect(() => {
     let currentConversation = props.conversations.find(chat => chat.id == conversationId)

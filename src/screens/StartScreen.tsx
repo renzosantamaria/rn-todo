@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   StyleSheet,
   View,
@@ -23,6 +23,8 @@ import * as Colors from "../constants/colors";
 import authMethods from "../store/auth/auth.methods";
 import todoSelectors from "../store/todo/todo.selectors";
 import todoMethods from "../store/todo/todo.methods";
+import { io } from "socket.io-client";
+import conversationMethods from "../store/conversation/conversation.methods";
 
 const connectStateAndDispatch = connect(
   (state: IReduxState) => ({
@@ -30,6 +32,7 @@ const connectStateAndDispatch = connect(
     todos: todoSelectors.todosStateSelector(state)
   }),
   {
+    getConversations: conversationMethods.getConversations,
     logout: authMethods.logout,
     getAllTodos: todoMethods.getAllTodos,
     postTodo: todoMethods.postTodo,
@@ -43,6 +46,23 @@ const Todos: React.FC<ConnectedProps<typeof connectStateAndDispatch>> = (
 ) => {
   const [inputValue, setInputValue] = useState<string>("");
   const [todoListFilter, settodoListFilter] = useState<string>("all");
+  const socketRef = useRef()
+  console.log('perron');
+  
+  useEffect(() => {
+    socketRef.current = io('http://192.168.0.40:5001') // dev
+    socketRef.current.on('conversationCreated', (msg) => {
+      console.log('getting prop conversationCreated!!!!');
+      props.getConversations();
+    }) 
+    socketRef.current.on('messageCreated', (msg) => {
+      console.log('index messageCreated --------------- :)');
+      props.getConversations();
+    })
+    return () => {
+    socketRef.current.disconnect()
+    }
+  }, [props.conversations])
 
   const addTodoHandler = async () => {
     await props.postTodo(inputValue, props.user.userId!)
