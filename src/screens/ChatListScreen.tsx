@@ -31,7 +31,6 @@ interface IProps {
 const ChatListScreen: React.FC<ConnectedProps<typeof connectStateAndDispatch> & IProps> = (props) => {
     const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
     const [selectedUserId, setSelectedUserId] = useState<number | null>(null)
-    const [unreadMessages, setUndreadMessages] = useState<boolean>(false)
 
     useEffect(() => {
         props.getConversations()
@@ -94,7 +93,7 @@ const ChatListScreen: React.FC<ConnectedProps<typeof connectStateAndDispatch> & 
                                 padding: 5
                                 }}
                             >
-                                {item.recipientNames.join(', ')} {unreadMessages ? 'new' : ''}
+                                {item.recipientNames.join(', ')} {false ? 'new' : ''}
                             </Text>
                         </TouchableOpacity>
                     </View>
