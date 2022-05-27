@@ -3,6 +3,7 @@ import { Message } from "../message/message.types"
 
 export interface IConversationsReduxState {
     conversations : Conversation[];
+    unreadConversations : Conversation["id"][]
 }
 
 export type Recipient = {
