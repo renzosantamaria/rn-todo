@@ -3,7 +3,6 @@ import {
   StyleSheet,
   View,
   Text,
-  // SafeAreaView,
   FlatList,
   StatusBar,
 } from "react-native";
@@ -25,11 +24,13 @@ import todoSelectors from "../store/todo/todo.selectors";
 import todoMethods from "../store/todo/todo.methods";
 import { io } from "socket.io-client";
 import conversationMethods from "../store/conversation/conversation.methods";
+import conversationSelectors from "../store/conversation/conversation.selectors";
 
 const connectStateAndDispatch = connect(
   (state: IReduxState) => ({
     user: userSelectors.userStateSelector(state),
-    todos: todoSelectors.todosStateSelector(state)
+    todos: todoSelectors.todosStateSelector(state),
+    conversations: conversationSelectors.conversationsStateSelector(state)
   }),
   {
     getConversations: conversationMethods.getConversations,
@@ -51,18 +52,23 @@ const Todos: React.FC<ConnectedProps<typeof connectStateAndDispatch>> = (
   
   useEffect(() => {
     socketRef.current = io('http://192.168.0.40:5001') // dev
-    socketRef.current.on('conversationCreated', (msg) => {
-      console.log('getting prop conversationCreated!!!!');
+
+    socketRef.current!.on('connect', () => {
+      let sessionId = socketRef.current.id
+      socketRef.current.emit('namespaceSessionId', {userId:props.user.userId, sessionId })
+    }) 
+    socketRef.current!.on('conversationCreated', () => {
       props.getConversations();
     }) 
-    socketRef.current.on('messageCreated', (msg) => {
-      console.log('index messageCreated --------------- :)');
+    socketRef.current!.on('privateMessage', (payload) => {
+      // add payload.chatId to an array of unread conversations in state to locally keep track of them
       props.getConversations();
+      console.warn(`New message from ${payload.senderName}`)
     })
     return () => {
-    socketRef.current.disconnect()
+    socketRef.current!.disconnect()
     }
-  }, [props.conversations])
+  }, [])
 
   const addTodoHandler = async () => {
     await props.postTodo(inputValue, props.user.userId!)
