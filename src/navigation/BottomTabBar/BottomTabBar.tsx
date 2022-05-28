@@ -1,8 +1,6 @@
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
-// import AlertHandler from "b3runtime/components/Alert/AlertHandler";
 import { IconType } from "../../components/Icon/Icon.types";
 import { IBottomTabStack } from "../Navigation.types";
-// import { colors } from "b3runtime/styles/colors";
 import React from "react";
 import { SafeAreaView, View } from "react-native";
 import styled from "styled-components/native";

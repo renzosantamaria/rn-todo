@@ -1,8 +1,4 @@
-// import {
-//     // colors,
-//     // ColorType,
-//     getColorWithOpacity,
-//   } from "b3runtime/styles/colors";
+
   import { spacing, SpacingSize } from "../../styles/spacing";
   import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
   import styled from "styled-components/native";
@@ -80,7 +76,7 @@
     top: 0;
     width: 100%;
     height: 100%;
-    background: 'white';
+    background: white;
     display: flex;
     justify-content: center;
     align-items: center;

@@ -1,5 +1,3 @@
-// import { ColorType } from "b3runtime/styles/colors";
-// import { FontSize } from "b3runtime/styles/typography";
 
 export interface IIcon {
   icon: IconType;

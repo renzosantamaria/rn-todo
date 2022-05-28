@@ -1,8 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
-// import ContentText from "b3runtime/components/ContentText/ContentText";
 import { IconType } from "../Icon/Icon.types";
 import HeaderNavigationItem from "../../navigation/HeaderNavigationItem/HeaderNavigationItem";
-// import { colors, ColorType } from "b3runtime/styles/colors";
 import { SpacingSize } from "../../styles/spacing";
 import React, { useEffect } from "react";
 import reactFastCompare from "react-fast-compare";
@@ -14,7 +12,6 @@ import {
   StatusBar,
   Text
 } from "react-native";
-// import tinycolor from "tinycolor2";
 
 import * as Style from "./Screen.style";
 
