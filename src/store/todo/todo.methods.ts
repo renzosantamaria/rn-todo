@@ -17,24 +17,26 @@ const getAllTodos = (): AppThunk => async (dispatch) => {
         if (!response) {
             throw new Error("Could not find todos");
         }
-        console.log('response: ', response)
+        
         const sortedTodos = sortArrayByObjKey('asc', response, 'id')
 
         //
-        const responseFirebase = await fetch('https://rn-todo-bc3f7-default-rtdb.europe-west1.firebasedatabase.app/todos.json')
-        const resDataFirebase = await responseFirebase.json()
-
-        const loadedTodos: TodoFirebase[] = []
-
-        for (const key in resDataFirebase) {
-            loadedTodos.push({
-                id: key,
-                text:resDataFirebase[key].text,
-                done:resDataFirebase[key].done,
-                userId:resDataFirebase[key].userId
-            })
-        }
-        console.log(loadedTodos);
+        // const responseFirebase = await fetch('https://rn-todo-bc3f7-default-rtdb.europe-west1.firebasedatabase.app/todos.json')
+        
+        // const resDataFirebase = await responseFirebase.json()
+        
+        // const loadedTodos: TodoFirebase[] = []
+        
+        // for (const key in resDataFirebase) {
+        //     loadedTodos.push({
+        //         id: key,
+        //         text:resDataFirebase[key].text,
+        //         done:resDataFirebase[key].done,
+        //         userId:resDataFirebase[key].userId
+        //     })
+        // }
+        // console.log('FIREBASE here');
+        // console.log(loadedTodos);
         
         //
 
@@ -53,7 +55,11 @@ const getAllTodos = (): AppThunk => async (dispatch) => {
         dispatch(
             addRequestState({
                 name: "login",
-                state: "ERROR"
+                state: "ERROR",
+                error : {
+                    message: error.message,
+                    exception: error
+                }
             })
         )
     }
@@ -79,20 +85,20 @@ const postTodo = (text:string, userId: number): AppThunk => async (dispatch) => 
         dispatch(getAllTodos())
 
         //
-        const responseFirebase = await fetch('https://rn-todo-bc3f7-default-rtdb.europe-west1.firebasedatabase.app/todos.json', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                text,
-                userId,
-                done: false
-            })
-        })
-        const resDataFirebase = await responseFirebase.json()
+        // const responseFirebase = await fetch('https://rn-todo-bc3f7-default-rtdb.europe-west1.firebasedatabase.app/todos.json', {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify({
+        //         text,
+        //         userId,
+        //         done: false
+        //     })
+        // })
+        // const resDataFirebase = await responseFirebase.json()
 
-        console.log(resDataFirebase);
+        // console.log(resDataFirebase);
         
         //
 
@@ -109,7 +115,11 @@ const postTodo = (text:string, userId: number): AppThunk => async (dispatch) => 
         dispatch(
             addRequestState({
                 name: "postTodo",
-                state: "ERROR"
+                state: "ERROR",
+                error : {
+                    message: error.message,
+                    exception: error
+                }
             })
         )
     }
@@ -146,7 +156,11 @@ const deleteTodoById = (todoId: number): AppThunk => async (dispatch) => {
         dispatch(
             addRequestState({
                 name: "deleteTodoById",
-                state: "ERROR"
+                state: "ERROR",
+                error : {
+                    message: error.message,
+                    exception: error
+                }
             })
         )
     }
@@ -183,7 +197,11 @@ const toggleTodoStateById = (todoId: number): AppThunk => async (dispatch) => {
         dispatch(
             addRequestState({
                 name: "toggleTodoById",
-                state: "ERROR"
+                state: "ERROR",
+                error : {
+                    message: error.message,
+                    exception: error
+                }
             })
         )
     }

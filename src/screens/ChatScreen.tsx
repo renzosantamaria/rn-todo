@@ -45,9 +45,6 @@ const ChattScreen: React.FC<ConnectedProps<typeof connectStateAndDispatch> & IPr
   useEffect(() => {
     if(props.unreadConversations.includes(conversationId)){
       let filteredList = props.unreadConversations.filter(convId => convId != conversationId)
-      console.log('FILTERED LIST ');
-      console.log(filteredList);
-      
       props.setUnreadConversations(filteredList)
     }
 

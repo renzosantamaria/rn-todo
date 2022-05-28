@@ -10,8 +10,6 @@ const conversationSlice = createSlice({
     initialState,
     reducers: {
         setConversationsList(state, action: PayloadAction<Conversation[]>){
-            console.log('here?');
-            
             state.conversationsList = action.payload
         },
         // addTodo(state, action: PayloadAction<string>){

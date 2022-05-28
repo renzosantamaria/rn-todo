@@ -50,7 +50,6 @@ const Todos: React.FC<ConnectedProps<typeof connectStateAndDispatch>> = (
   const [inputValue, setInputValue] = useState<string>("");
   const [todoListFilter, settodoListFilter] = useState<string>("all");
   const socketRef = useRef()
-  console.log('perron');
   
   useEffect(() => {
     // socketRef.current = io('http://192.168.0.40:5001') // dev

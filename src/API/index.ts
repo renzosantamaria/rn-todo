@@ -53,7 +53,6 @@ export const registerUser = async (surname, lastname, email, password) => {
         })
 
         if (response.status === 200) {
-            console.log('good request');
             return response.data
         }else{
             throw new Error("could not create the user");
