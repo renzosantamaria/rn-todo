@@ -145,7 +145,7 @@ const ChatListScreen: React.FC<ConnectedProps<typeof connectStateAndDispatch> & 
                     </TouchableOpacity>
                     <FlatList
                         // keyExtractor={(user) => user.id}
-                        data={props.usersList}
+                        data={props.usersList.filter(user => user.id != props.user.userId)}
                         renderItem={({ item }) => (
                             <View style={{ backgroundColor: `${selectedUserId === item.id ? "#eecba0" : "#f2f2f2"}`}}>
                                 <TouchableOpacity onPress={() => handleSelectUserFromList(item.id)}>
