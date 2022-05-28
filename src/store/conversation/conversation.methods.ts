@@ -35,7 +35,10 @@ const getConversations = (): AppThunk => async (dispatch) => {
         dispatch(
             addRequestState({
                 name: "postTodo",
-                state: "ERROR"
+                error : {
+                    message: error.message,
+                    exception: error
+                }
             })
         )
     }

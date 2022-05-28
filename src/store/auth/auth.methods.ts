@@ -21,6 +21,7 @@ const login = (credentials: IloginCredentials): AppThunk => async (dispatch) => 
             })
         )
         const response = await API.login(email, password)
+        
         if (!response) {
             throw new Error("User not found");
         }
@@ -47,7 +48,11 @@ const login = (credentials: IloginCredentials): AppThunk => async (dispatch) => 
         dispatch(
             addRequestState({
                 name: "login",
-                state: "ERROR"
+                state: "ERROR",
+                error : {
+                    message: error.message,
+                    exception: error
+                }
             })
         )
     }

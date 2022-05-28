@@ -24,8 +24,14 @@ export type AppThunk<ReturnType = void> = ThunkAction<
   Action<string>
 >;
 
+export interface IError {
+  message?: string;
+  exception: Error;
+}
+
 export type RequestState = "INITIAL" | "LOADING" | "COMPLETE" | "ERROR";
 export interface IRequestProps {
   state: RequestState;
+  error?: IError;
 }
 

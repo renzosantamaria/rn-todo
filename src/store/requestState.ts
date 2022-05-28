@@ -64,6 +64,6 @@ export const generateRequestStateSelectors = (requestName: IRequestStateItem["na
           requestSelector,
           (request) => request?.state === "COMPLETE"
         ),
-        // error: createSelector(requestSelector, (request) => request?.error),
+        error: createSelector(requestSelector, (request) => request?.error),
       };
 }

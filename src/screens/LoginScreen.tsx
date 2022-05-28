@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { connect, ConnectedProps } from "react-redux";
 import { StyleSheet, View, Text, KeyboardAvoidingView } from "react-native";
 import Button from "../components/styled-components/Button";
@@ -12,6 +12,8 @@ import Screen from "../components/Screen/Screen";
 const connectStateAndDispatch = connect(
   (state: IReduxState) => ({
     isAuth: authStateSelector.authStateSelector(state),
+    isLoginLoading: authStateSelector.isLoginInProgressSelector(state),
+    loginError: authStateSelector.loginCredentialsStateSelector.error(state)
   }),
   {
     loginUser: authMethods.login,
@@ -27,14 +29,26 @@ const LoginForm: React.FC<
 > = (props) => {
   const [email, setEmail] = useState<string>("renzo.santamaria@outlook.com");
   const [password, setPassword] = useState<string>("password");
+  const [showLoading, setShowLoading] = useState(false);
+  const [showErrorMsg, setShowErrorMsg] = useState(false);
 
   const handleLogin = async () => {
     props.loginUser({ email, password });
   };
 
-//   const navigateToRegister = () => {
-//     //props.navigation.navigate("Register")
-//   };
+  useEffect(() => {
+    setShowErrorMsg(false)
+  },[email, password ])
+
+  useEffect(() => {
+    if (props.isLoginLoading) {
+      setShowLoading(true);
+    }
+    if (props.loginError) {
+      setShowLoading(false);
+      setShowErrorMsg(true)
+    }
+  }, [props.isLoginLoading, props.loginError]);
 
   return (
     <Screen
@@ -42,7 +56,8 @@ const LoginForm: React.FC<
       header={{ hide: false, color: "#fff" }}
       transparentBackground={true}
       // showLoadingIndicator={props.isLoginGoogleLoading}
-      // loadingText="Logging in..."
+      showLoadingIndicator={showLoading}
+      loadingText="Logging in..."
       ignorepadding={true}
     >
       <KeyboardAvoidingView style={{ flex: 1, flexDirection: 'column',justifyContent: 'center',}} behavior="padding" enabled   keyboardVerticalOffset={100}>
@@ -60,6 +75,9 @@ const LoginForm: React.FC<
             value={password}
             onChangeText={(text) => setPassword(text)}
           />
+          {showErrorMsg &&
+          <Text style={styles.errorMessage}>The given email or password doesn't exist or match </Text>
+          }
           <Button
             width={"60%"}
             bgColor={Colors.accentColor}
@@ -87,6 +105,10 @@ const styles = StyleSheet.create({
   loginButton: {
     width: "60%",
   },
+  errorMessage:{
+    fontSize: 12,
+    color: "red",
+  }
 });
 
 export default connectStateAndDispatch(LoginForm);

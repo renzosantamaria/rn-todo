@@ -1,7 +1,7 @@
 import { IReduxState } from "../store.types";
 import { createSelector } from "@reduxjs/toolkit";
 
-// import { generateRequestStateSelectors } from "../requestState";
+import { generateRequestStateSelectors } from "../requestState";
 
 const userStateSelector = createSelector(
     (state: IReduxState) => state.user,
@@ -12,7 +12,13 @@ const usersListStateSelector = createSelector(
     (userListState) => userListState.userList
 )
 
+const registerUserStateSelector = generateRequestStateSelectors("registerUser");
+
+const isRegisterInProgressSelector = (state: IReduxState) => registerUserStateSelector.isLoading(state)
+
 export default {
     userStateSelector,
-    usersListStateSelector
+    usersListStateSelector,
+    registerUserStateSelector,
+    isRegisterInProgressSelector
 }

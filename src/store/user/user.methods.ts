@@ -33,7 +33,50 @@ const changeUserPassword = (newPassword: string): AppThunk => async (dispatch) =
         dispatch(
             addRequestState({
                 name: "changeUserPassword",
-                state: "ERROR"
+                state: "ERROR",
+                error : {
+                    message: error.message,
+                    exception: error
+                }
+            })
+        )
+    }
+}
+const registerUser = (surname:string, lastname:string, email:string, password:string): AppThunk => async (dispatch) => {
+    try {
+        if (!surname || !lastname || !email || !password ) {
+            throw new Error("surname, lastname, email and password are required fields");
+        }
+
+        dispatch(
+            addRequestState({
+                name: "registerUser",
+                state: "LOADING"
+            })
+        )
+        const response = await API.registerUser(surname, lastname, email, password)
+        if (!response) {
+            throw new Error("Failed to register the user");
+        }
+
+        dispatch(
+            addRequestState({
+                name: "registerUser",
+                state: "COMPLETE"
+            })
+        )
+        
+    } catch (error) {
+        console.log(error);
+        
+        dispatch(
+            addRequestState({
+                name: "registerUser",
+                state: "ERROR",
+                error : {
+                    message: error.message,
+                    exception: error
+                }
             })
         )
     }
@@ -66,12 +109,17 @@ const getAllUsers = (): AppThunk => async (dispatch) => {
         dispatch(
             addRequestState({
                 name: "getAllUsers",
-                state: "ERROR"
+                state: "ERROR",
+                error : {
+                    message: error.message,
+                    exception: error
+                }
             })
         )
     }
 }
 export default {
     changeUserPassword,
-    getAllUsers
+    getAllUsers,
+    registerUser
 }

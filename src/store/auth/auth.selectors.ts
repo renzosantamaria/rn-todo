@@ -14,11 +14,11 @@ const userIdSelector = createSelector(
 )
 
 const loginCredentialsStateSelector = generateRequestStateSelectors(
-    "loginCredentials"
+    "login"
   );
 
 const isLoginInProgressSelector = (state: IReduxState) => {
-    loginCredentialsStateSelector.isLoading(state)
+   return loginCredentialsStateSelector.isLoading(state)
 }
 
 const requestResetPasswordStateSelector = generateRequestStateSelectors(
