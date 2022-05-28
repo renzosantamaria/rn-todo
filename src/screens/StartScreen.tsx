@@ -53,7 +53,8 @@ const Todos: React.FC<ConnectedProps<typeof connectStateAndDispatch>> = (
   console.log('perron');
   
   useEffect(() => {
-    socketRef.current = io('http://192.168.0.40:5001') // dev
+    // socketRef.current = io('http://192.168.0.40:5001') // dev
+    socketRef.current = io('wss://ts-rn-todo.herokuapp.com') //prod
 
     socketRef.current!.on('connect', () => {
       let sessionId = socketRef.current.id

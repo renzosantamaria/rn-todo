@@ -3,8 +3,8 @@ import axios, { AxiosError, AxiosResponse } from 'axios'
 
 
 const API = axios.create({
-    // baseURL: 'https://ts-rn-todo.herokuapp.com/api/v1',  // production backend
-    baseURL: 'http://192.168.0.40:5001/api/v1',  // development backend
+    baseURL: 'https://ts-rn-todo.herokuapp.com/api/v1',  // production backend
+    // baseURL: 'http://192.168.0.40:5001/api/v1',  // development backend
   });
 
 export const setDefaultHeaders = token => {
