@@ -30,7 +30,8 @@ const connectStateAndDispatch = connect(
   (state: IReduxState) => ({
     user: userSelectors.userStateSelector(state),
     todos: todoSelectors.todosStateSelector(state),
-    conversations: conversationSelectors.conversationsStateSelector(state)
+    conversations: conversationSelectors.conversationsStateSelector(state),
+    unreadConversations: conversationSelectors.unreadConversationStateSelector(state)
   }),
   {
     getConversations: conversationMethods.getConversations,
@@ -38,7 +39,8 @@ const connectStateAndDispatch = connect(
     getAllTodos: todoMethods.getAllTodos,
     postTodo: todoMethods.postTodo,
     deleteTodoById: todoMethods.deleteTodoById,
-    toggleTodoState: todoMethods.toggleTodoStateById
+    toggleTodoState: todoMethods.toggleTodoStateById,
+    setUnreadConversations: conversationMethods.setUnreadConversations
   }
 );
 
@@ -61,14 +63,16 @@ const Todos: React.FC<ConnectedProps<typeof connectStateAndDispatch>> = (
       props.getConversations();
     }) 
     socketRef.current!.on('privateMessage', (payload) => {
-      // add payload.chatId to an array of unread conversations in state to locally keep track of them
       props.getConversations();
+      let unreadConversations = [...props.unreadConversations]
+      unreadConversations.includes(payload.chatId) ? '' : unreadConversations.push(+payload.chatId)
+      props.setUnreadConversations(unreadConversations)
       console.warn(`New message from ${payload.senderName}`)
     })
     return () => {
     socketRef.current!.disconnect()
     }
-  }, [])
+  }, [props.unreadConversations])
 
   const addTodoHandler = async () => {
     await props.postTodo(inputValue, props.user.userId!)

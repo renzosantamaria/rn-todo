@@ -8,6 +8,11 @@ const conversationsStateSelector = createSelector(
     (conversationState) => conversationState.conversations
 )
 
+const unreadConversationStateSelector = createSelector(
+    (state:IReduxState) => state.conversations,
+    (unreadConversationState) => unreadConversationState.unreadConversations
+)
+
 // const userIdSelector = createSelector(
 //     (state: IReduxState) => state.auth,
 //     (authState) => authState.userId
@@ -27,5 +32,6 @@ const conversationsStateSelector = createSelector(
 // const signupStateSelector = generateRequestStateSelectors("signup");
 
 export default {
-    conversationsStateSelector
+    conversationsStateSelector,
+    unreadConversationStateSelector
 }

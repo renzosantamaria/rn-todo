@@ -86,7 +86,12 @@ const createConversation = (membersId: string, name: string): AppThunk => async 
     }
 }
 
+const setUnreadConversations = (unreadConversations: number[]): AppThunk => async (dispatch) => {
+    dispatch(conversationsReduxSlice.actions.setUnreadConversations(unreadConversations))
+}
+
 export default {
     getConversations,
-    createConversation
+    createConversation,
+    setUnreadConversations
 }

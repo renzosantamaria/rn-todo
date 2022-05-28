@@ -20,11 +20,13 @@ import { Conversation } from "../store/conversation/conversation.types";
 const connectStateAndDispatch = connect(
     (state: IReduxState) => ({
       conversations: conversationSelectors.conversationsStateSelector(state),
+      unreadConversations: conversationSelectors.unreadConversationStateSelector(state),
       user: userSelectors.userStateSelector(state)
     }),
     {
       postMessage: messageMethods.postMessage,
       getConversations: conversationMethods.getConversations,
+      setUnreadConversations: conversationMethods.setUnreadConversations
     }
   );
 interface IProps {
@@ -40,6 +42,16 @@ const ChattScreen: React.FC<ConnectedProps<typeof connectStateAndDispatch> & IPr
   const { conversationId } = props.route.params;
   const myUserId = props.user.userId
 
+  useEffect(() => {
+    if(props.unreadConversations.includes(conversationId)){
+      let filteredList = props.unreadConversations.filter(convId => convId != conversationId)
+      console.log('FILTERED LIST ');
+      console.log(filteredList);
+      
+      props.setUnreadConversations(filteredList)
+    }
+
+  },[props.unreadConversations])
 
   useEffect(() => {
     let currentConversation = props.conversations.find(chat => chat.id == conversationId)

@@ -15,7 +15,8 @@ const connectStateAndDispatch = connect(
     (state: IReduxState) => ({
       user: userSelectors.userStateSelector(state),
       usersList: userSelectors.usersListStateSelector(state),
-      conversations: conversationSelectors.conversationsStateSelector(state)
+      conversations: conversationSelectors.conversationsStateSelector(state),
+      unreadConversations: conversationSelectors.unreadConversationStateSelector(state)
     }),
     {
         getConversations: conversationMethods.getConversations,
@@ -90,10 +91,11 @@ const ChatListScreen: React.FC<ConnectedProps<typeof connectStateAndDispatch> & 
                                 color: true ? "#242424" : "#fff",
                                 textDecorationLine: false ? "line-through" : "none",
                                 borderWidth: 1,
-                                padding: 5
+                                padding: 5,
+                                fontWeight: props.unreadConversations.includes(item.id) ? "bold" : "normal"
                                 }}
                             >
-                                {item.recipientNames.join(', ')} {false ? 'new' : ''}
+                                {item.recipientNames.join(', ')}
                             </Text>
                         </TouchableOpacity>
                     </View>
