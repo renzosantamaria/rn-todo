@@ -20,6 +20,9 @@ const Input: React.FC <IProps> = ({placeholder, placeholderColor, value, onChang
         placeholderTextColor={placeholderColor || 'grey'}
         onSubmitEditing={onSubmitEditing}
         onChangeText={onChangeText}
+        multiline={true}
+        numberOfLines={2}
+        // secureTextEntry={true}
         // onKeyPress={(e) => onKeyPress(e)}
     />
  )
@@ -50,4 +53,16 @@ const styles = StyleSheet.create({
         marginVertical: 20,
         marginHorizontal: 10
       },
+    messageInput: {
+        backgroundColor: 'white',
+        width: '83%',
+        paddingHorizontal: 16,
+        borderRadius: 14,
+        borderColor: 'black',
+        borderStyle: 'solid',
+        borderWidth: 1,
+        height: 30,
+        maxHeight: 50,
+        lineHeight: 18
+    }
 })
