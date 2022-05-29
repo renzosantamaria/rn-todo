@@ -7,6 +7,7 @@ import {
   StatusBar,
   Vibration
 } from "react-native";
+import { Audio } from "expo-av";
 
 import Screen from "../components/Screen/Screen";
 
@@ -50,6 +51,7 @@ const Todos: React.FC<ConnectedProps<typeof connectStateAndDispatch>> = (
 ) => {
   const [inputValue, setInputValue] = useState<string>("");
   const [todoListFilter, settodoListFilter] = useState<string>("all");
+  const [sound, setSound] = useState();
   const socketRef = useRef()
   
   useEffect(() => {
@@ -65,6 +67,7 @@ const Todos: React.FC<ConnectedProps<typeof connectStateAndDispatch>> = (
     }) 
     socketRef.current!.on('privateMessage', (payload) => {
       Vibration.vibrate(1 * 800)
+      playSound()
       props.getConversations();
       let unreadConversations = [...props.unreadConversations]
       unreadConversations.includes(payload.chatId) ? '' : unreadConversations.push(+payload.chatId)
@@ -75,6 +78,16 @@ const Todos: React.FC<ConnectedProps<typeof connectStateAndDispatch>> = (
     socketRef.current!.disconnect()
     }
   }, [props.unreadConversations])
+
+  const playSound = async () => {
+    console.log('Loading Sound');
+    const { sound } = await Audio.Sound.createAsync(
+       require('../assets/pop-alert.mp3')
+    );
+    setSound(sound);
+
+    console.log('Playing Sound');
+    await sound.playAsync(); }
 
   const addTodoHandler = async () => {
     await props.postTodo(inputValue, props.user.userId!)

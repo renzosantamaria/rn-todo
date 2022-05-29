@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FlatList, Text, View, StyleSheet, KeyboardAvoidingView } from "react-native";
+import { Audio } from "expo-av";
 import Message from "../components/Message/Message";
 import { StackNavigationProp } from "@react-navigation/stack";
 import {
@@ -40,6 +41,7 @@ const ChattScreen: React.FC<ConnectedProps<typeof connectStateAndDispatch> & IPr
   const [inputValue, setInputValue] = useState<string>("");
   const [conversation, setConversation] = useState<Conversation>()
   const { conversationId } = props.route.params;
+  const [sound, setSound] = useState();
   const myUserId = props.user.userId
 
   useEffect(()=> {
@@ -59,11 +61,23 @@ const ChattScreen: React.FC<ConnectedProps<typeof connectStateAndDispatch> & IPr
     setConversation(currentConversation)
   },[props.conversations])
 
+  const playSound = async () => {
+    console.log('Loading Sound');
+    const { sound } = await Audio.Sound.createAsync(
+       require('../assets/messageSent-alert.wav')
+    );
+    setSound(sound);
+
+    console.log('Playing Sound');
+    await sound.playAsync();
+  }
+
   const handleSendMessage = async () => {
     setInputValue("");
     let newMessage = inputValue.trim()
     try {
       if (newMessage.length > 0) {
+        playSound()
         await props.postMessage(conversationId, inputValue)
         props.getConversations()
       }
