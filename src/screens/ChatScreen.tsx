@@ -61,8 +61,9 @@ const ChattScreen: React.FC<ConnectedProps<typeof connectStateAndDispatch> & IPr
 
   const handleSendMessage = async () => {
     setInputValue("");
+    let newMessage = inputValue.trim()
     try {
-      if (inputValue.length > 0) {
+      if (newMessage.length > 0) {
         await props.postMessage(conversationId, inputValue)
         props.getConversations()
       }
