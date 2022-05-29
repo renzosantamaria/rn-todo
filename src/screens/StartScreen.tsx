@@ -27,6 +27,7 @@ import todoMethods from "../store/todo/todo.methods";
 import { io } from "socket.io-client";
 import conversationMethods from "../store/conversation/conversation.methods";
 import conversationSelectors from "../store/conversation/conversation.selectors";
+import userMethods from "../store/user/user.methods";
 
 const connectStateAndDispatch = connect(
   (state: IReduxState) => ({
@@ -36,6 +37,7 @@ const connectStateAndDispatch = connect(
     unreadConversations: conversationSelectors.unreadConversationStateSelector(state)
   }),
   {
+    getAllUsers: userMethods.getAllUsers,
     getConversations: conversationMethods.getConversations,
     logout: authMethods.logout,
     getAllTodos: todoMethods.getAllTodos,
@@ -63,6 +65,19 @@ const Todos: React.FC<ConnectedProps<typeof connectStateAndDispatch>> = (
       socketRef.current.emit('namespaceSessionId', {userId:props.user.userId, sessionId })
     }) 
     socketRef.current!.on('conversationCreated', () => {
+      props.getConversations();
+    }) 
+    socketRef.current!.on('newRegisteredUser', () => {
+      props.getAllUsers()
+    }) 
+    socketRef.current!.on('updateSenderSessions', (payload) => {
+      let unreadConversations = [...props.unreadConversations]
+      console.log(unreadConversations);
+      
+      if(unreadConversations.includes(+payload.chatId)){
+        let filteredConversation = unreadConversations.filter( id => id != +payload.chatId)
+        props.setUnreadConversations(filteredConversation)
+      } 
       props.getConversations();
     }) 
     socketRef.current!.on('privateMessage', (payload) => {
