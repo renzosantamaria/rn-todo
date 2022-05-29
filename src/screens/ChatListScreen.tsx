@@ -32,7 +32,6 @@ interface IProps {
   
 const ChatListScreen: React.FC<ConnectedProps<typeof connectStateAndDispatch> & IProps> = (props) => {
     const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
-    const [selectedUserId, setSelectedUserId] = useState<number | null>(null)
 
     useEffect(() => {
         props.getConversations()
@@ -44,7 +43,7 @@ const ChatListScreen: React.FC<ConnectedProps<typeof connectStateAndDispatch> & 
         props.getConversations()
     }
 
-    const handleCreateChat = () => {
+    const handleCreateChat = (selectedUserId) => {
         //Fix how the data is assigned to the usersList array. (respect the types!)
         //Add validation min 2 ids required to create a chat
         //Add validation cannot create chat with myself
@@ -73,12 +72,8 @@ const ChatListScreen: React.FC<ConnectedProps<typeof connectStateAndDispatch> & 
         handleCloseModal()
     }
 
-    const handleSelectUserFromList = (id) => {
-        setSelectedUserId(id)
-    }
 
     const handleCloseModal = () => {
-        setSelectedUserId(null)
         setIsModalVisible(false)
     }
 
@@ -180,7 +175,7 @@ const ChatListScreen: React.FC<ConnectedProps<typeof connectStateAndDispatch> & 
                         style={{
                         textAlign: "center",
                         lineHeight: 30,
-                        // width: 30,
+                        marginBottom: 20,
                         height:30,
                         fontSize: 24
                         }}
@@ -191,14 +186,17 @@ const ChatListScreen: React.FC<ConnectedProps<typeof connectStateAndDispatch> & 
                         // keyExtractor={(user) => user.id}
                         data={props.usersList.filter(user => user.id != props.user.userId)}
                         renderItem={({ item }) => (
-                            <View style={{ backgroundColor: `${selectedUserId === item.id ? "#eecba0" : "#f2f2f2"}`, marginBottom: 10}}>
-                                <TouchableOpacity onPress={() => handleSelectUserFromList(item.id)}>
+                            <View style={{ 
+                                backgroundColor: "#1a1a1a",
+                                marginBottom: 10,
+                                borderRadius: 8,
+                                }}>
+                                <TouchableOpacity onPress={() => handleCreateChat(item.id)}>
                                     <Text
                                         style={{
-                                        color: true ? "#242424" : "#fff",
-                                        borderWidth: 1,
-                                        borderRadius: 4,
-                                        padding: 5
+                                        color: "#fff",
+                                        paddingVertical: 8,
+                                        paddingHorizontal: 10
                                         }}
                                     >
                                         {item.surname}
@@ -207,19 +205,6 @@ const ChatListScreen: React.FC<ConnectedProps<typeof connectStateAndDispatch> & 
                             </View>
                         )} 
                     />
-                    {selectedUserId &&
-                    <TouchableOpacity onPress={handleCreateChat}>
-                        <Text
-                            style={{
-                            color: true ? "#242424" : "#fff",
-                            textDecorationLine: false ? "line-through" : "none",
-                            borderWidth: 1,
-                            padding: 5
-                            }}
-                        >
-                            Create new chat
-                        </Text>
-                    </TouchableOpacity>}
                 </View>
             </Modal>
         </SafeAreaView>
@@ -229,12 +214,10 @@ const styles = StyleSheet.create({
     modalContent: {
       height: "70%",
       borderRadius: 10,
-    //   justifyContent: 'center',
-    //   alignItems: 'center',
       backgroundColor: 'white',
       position: "relative",
       paddingTop: 50,
-      paddingHorizontal: 10
+      paddingHorizontal: 30
     },
     container: {
         flexDirection: "row",
