@@ -2,6 +2,7 @@ import React from "react";
 import {
   Text,
   SafeAreaView,
+  View,
 } from "react-native";
 
 import { connect, ConnectedProps } from "react-redux";
@@ -47,22 +48,32 @@ const ProfileScreen:React.FC<ConnectedProps<typeof connectStateAndDispatch> & Pr
     }
 
     return(
-        <SafeAreaView>
-            <Text>Hello from the profile Screen</Text>
+        <SafeAreaView
+          style={{
+            flex: 1,
+            justifyContent: "center",
+          }}
+        >
+          <View 
+            style={{
+              paddingHorizontal: 20
+            }}
+          >
             <Button
                 width={"auto"}
                 bgColor={Colors.$4dp}
                 color={"#5a78c6"}
                 onPress={navigateToChangePassword}
-                text={"Change password"}
+                text={"CHANGE PASSWORD"}
             />
             <Button
                 width={"auto"}
                 bgColor={Colors.$4dp}
                 color={"#dc5151"}
                 onPress={handleLogout}
-                text={"Logout"}
+                text={"LOG OUT"}
             />
+          </View>
         </SafeAreaView>
     )
 }
