@@ -9,5 +9,6 @@ export type Message = {
     content: string,
     senderId: number,
     senderName: string,
-    updatedAt?: string
+    updatedAt?: string,
+    timeStamp: string
 } 
