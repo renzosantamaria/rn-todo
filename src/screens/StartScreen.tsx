@@ -5,6 +5,7 @@ import {
   Text,
   FlatList,
   StatusBar,
+  Vibration
 } from "react-native";
 
 import Screen from "../components/Screen/Screen";
@@ -63,6 +64,7 @@ const Todos: React.FC<ConnectedProps<typeof connectStateAndDispatch>> = (
       props.getConversations();
     }) 
     socketRef.current!.on('privateMessage', (payload) => {
+      Vibration.vibrate(1 * 800)
       props.getConversations();
       let unreadConversations = [...props.unreadConversations]
       unreadConversations.includes(payload.chatId) ? '' : unreadConversations.push(+payload.chatId)
