@@ -141,14 +141,14 @@ const Todos: React.FC<ConnectedProps<typeof connectStateAndDispatch>> = (
   };
 
   return (
-    <Screen
-      bgcolor="black"
-      header={{ hide: true, color: "primary" }}
-      transparentBackground={true}
-      // showLoadingIndicator={props.isLoginGoogleLoading}
-      // loadingText="Logging in..."
-      ignorepadding={true}
-    >
+    // <Screen
+    //   bgcolor="black"
+    //   header={{ hide: true, color: "primary" }}
+    //   transparentBackground={true}
+    //   // showLoadingIndicator={props.isLoginGoogleLoading}
+    //   // loadingText="Logging in..."
+    //   ignorepadding={true}
+    // >
       <SafeAreaView>
         <StatusBar hidden={false} backgroundColor={"black"} />
         <View style={{ marginTop: 30, alignItems: "center" }}>
@@ -169,8 +169,7 @@ const Todos: React.FC<ConnectedProps<typeof connectStateAndDispatch>> = (
             placeholder={"placeholder..."}
             value={inputValue}
             onChangeText={(text) => setInputValue(text)}
-            onSubmitEditing={addTodoHandler}
-            onKeyPress={({ nativeEvent }) => console.log(nativeEvent.key)}
+            // onSubmitEditing={addTodoHandler}
           />
           <Text
             onPress={addTodoHandler}
@@ -232,11 +231,12 @@ const Todos: React.FC<ConnectedProps<typeof connectStateAndDispatch>> = (
                 style={{
                   color: item.done ? "#8f8f8f" : "#fff",
                   textDecorationLine: item.done ? "line-through" : "none",
+                  width: "80%"
                 }}
               >
                 {item.text}
               </Text>
-              <View style={{ flexDirection: "row" }}>
+              <View style={{ flexDirection: "row", alignSelf: "flex-start" }}>
                 <IconButton
                   color={`${item.done ? "#48914e" : "#e1e1e1"}`}
                   name={
@@ -256,7 +256,7 @@ const Todos: React.FC<ConnectedProps<typeof connectStateAndDispatch>> = (
           )} 
         />
       </SafeAreaView>
-    </Screen>
+    // </Screen>
   );
 };
 
@@ -274,10 +274,10 @@ const styles = StyleSheet.create({
     marginTop: 12,
     marginRight: "auto",
     marginLeft: "auto",
-    borderRadius: 20,
+    borderRadius: 10,
     flexDirection: "row",
     justifyContent: "space-between",
-    width: "80%",
+    width: "90%",
   },
   welcome: {
     fontSize: 30,
