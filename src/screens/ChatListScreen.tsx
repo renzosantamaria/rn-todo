@@ -39,6 +39,7 @@ const ChatListScreen: React.FC<ConnectedProps<typeof connectStateAndDispatch> & 
     }, [])
     
     const handleNavigation = (conversationId) => {
+        // Should be nice to emit an event that removes this conversationId from the unreadMessages
         props.navigation.navigate('Chat', {conversationId})
         props.getConversations()
     }
