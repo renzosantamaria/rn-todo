@@ -88,9 +88,10 @@ const ChangePasswordForm: React.FC<
 const styles = StyleSheet.create({
   loginForm: {
     flex: 1,
-    width: "100%",
+    width: "63%",
     alignItems: "center",
     justifyContent: "center",
+    alignSelf: "center"
   },
   heading: {
     color: "black",

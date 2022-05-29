@@ -1,5 +1,5 @@
 import React from "react";
-import { TextInput, StyleSheet } from "react-native";
+import { TextInput, StyleSheet, Platform } from "react-native";
 
 interface IProps {
     placeholder: string;
@@ -33,14 +33,15 @@ export default Input
 const styles = StyleSheet.create({
     inputLight: {
         backgroundColor: 'white',
-        width: '60%',
-        padding: 6,
-        borderRadius: 50,
+        width: '90%',
+        paddingVertical: Platform.OS === 'ios' ? 6: 0,
+        paddingHorizontal: Platform.OS === 'ios' ? 6: 8,
+        borderRadius: 12,
         borderColor: 'black',
         borderStyle: 'solid',
         borderWidth: 1,
         marginVertical: 20,
-        marginHorizontal: 10,
+        // marginHorizontal: 10,
       },
     inputDark: {
         backgroundColor: 'white',
@@ -56,13 +57,14 @@ const styles = StyleSheet.create({
     messageInput: {
         backgroundColor: 'white',
         width: '83%',
+        paddingVertical: Platform.OS === 'ios' ? 8: 0,
         paddingHorizontal: 16,
         borderRadius: 14,
         borderColor: 'black',
         borderStyle: 'solid',
         borderWidth: 1,
-        height: 30,
-        maxHeight: 50,
+        minHeight: 30,
+        maxHeight: 60,
         lineHeight: 18
     }
 })

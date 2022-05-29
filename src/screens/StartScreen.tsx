@@ -5,7 +5,11 @@ import {
   Text,
   FlatList,
   StatusBar,
-  Vibration
+  Vibration,
+  Platform,
+  KeyboardAvoidingView,
+  Keyboard,
+  TouchableWithoutFeedback
 } from "react-native";
 import { Audio } from "expo-av";
 
@@ -106,6 +110,7 @@ const Todos: React.FC<ConnectedProps<typeof connectStateAndDispatch>> = (
 
   const addTodoHandler = async () => {
     await props.postTodo(inputValue, props.user.userId!)
+    Keyboard.dismiss()
     setInputValue("");
   };
 
@@ -149,6 +154,7 @@ const Todos: React.FC<ConnectedProps<typeof connectStateAndDispatch>> = (
     //   // loadingText="Logging in..."
     //   ignorepadding={true}
     // >
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <SafeAreaView>
         <StatusBar hidden={false} backgroundColor={"black"} />
         <View style={{ marginTop: 30, alignItems: "center" }}>
@@ -156,28 +162,31 @@ const Todos: React.FC<ConnectedProps<typeof connectStateAndDispatch>> = (
           <Image imageSource={require("../assets/dog.jpeg")} />
         </View>
 
-        <View
-          style={{
-            flexDirection: "row",
-            width: "100%",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Input
-            style={"inputLight"}
-            placeholder={"placeholder..."}
-            value={inputValue}
-            onChangeText={(text) => setInputValue(text)}
-            // onSubmitEditing={addTodoHandler}
-          />
-          <Text
-            onPress={addTodoHandler}
-            style={{ color: "#29728c", fontSize: 18 }}
+          <View
+            style={{
+              flexDirection: "row",
+              width: "100%",
+              justifyContent: "center",
+              alignItems: "center",
+              paddingHorizontal: 18
+            }}
           >
-            Add Todo
-          </Text>
-        </View>
+            <KeyboardAvoidingView style={{ flex: 1, flexDirection: 'row',}} behavior="padding" enabled   keyboardVerticalOffset={100}>
+              <Input
+                style={"inputLight"}
+                placeholder={"New task..."}
+                value={inputValue}
+                onChangeText={(text) => setInputValue(text)}
+                // onSubmitEditing={addTodoHandler}
+              />
+            </KeyboardAvoidingView>
+            <Text
+              onPress={addTodoHandler}
+              style={{ color: "#29728c", fontSize: 18 }}
+              >
+              Add Todo
+            </Text>
+          </View>
 
         <View
           style={{
@@ -256,6 +265,7 @@ const Todos: React.FC<ConnectedProps<typeof connectStateAndDispatch>> = (
           )} 
         />
       </SafeAreaView>
+    </TouchableWithoutFeedback>
     // </Screen>
   );
 };
