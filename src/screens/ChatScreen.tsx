@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { FlatList, Text, View, TouchableOpacity, StyleSheet, KeyboardAvoidingView } from "react-native";
-import Screen from "../components/Screen/Screen";
+import { FlatList, Text, View, StyleSheet, KeyboardAvoidingView } from "react-native";
+import Message from "../components/Message/Message";
 import { StackNavigationProp } from "@react-navigation/stack";
 import {
   AuthorizedNavigationStack,
@@ -42,6 +42,10 @@ const ChattScreen: React.FC<ConnectedProps<typeof connectStateAndDispatch> & IPr
   const { conversationId } = props.route.params;
   const myUserId = props.user.userId
 
+  useEffect(()=> {
+    props.navigation.setOptions({ headerTitle: conversation?.recipientNames.join(', '), headerBackTitle: ' ', headerTintColor: 'black' });
+  }, [conversation])
+
   useEffect(() => {
     if(props.unreadConversations.includes(conversationId)){
       let filteredList = props.unreadConversations.filter(convId => convId != conversationId)
@@ -55,101 +59,70 @@ const ChattScreen: React.FC<ConnectedProps<typeof connectStateAndDispatch> & IPr
     setConversation(currentConversation)
   },[props.conversations])
 
-  const addTodoHandler = async () => {
-    await props.postMessage(conversationId, inputValue)
+  const handleSendMessage = async () => {
+    setInputValue("");
     try {
-      props.getConversations()
+      if (inputValue.length > 0) {
+        await props.postMessage(conversationId, inputValue)
+        props.getConversations()
+      }
     } catch (error) {
       console.log(error);
     }
-    setInputValue("");
   };
 
   return (
-    <Screen
-      bgcolor="grey"
-      header={{
-        hide: false,
-        color: "#fff",
-        backButtonText: conversation && conversation.recipientNames.join(' ,')
-      }}
-      transparentBackground={true}
-      // showLoadingIndicator={props.isLoginGoogleLoading}
-      // loadingText="Logging in..."
-      ignorepadding={true}
-    >
        <KeyboardAvoidingView style={{ flex: 1, flexDirection: 'column',justifyContent: 'center',}} behavior="padding" enabled   keyboardVerticalOffset={100}>
-        <View>
-            {conversation && <FlatList
-            keyExtractor={(conversation) => conversation.id.toString()}
-            style={ styles.messageList }
-            data={conversation.messages}
-            renderItem={({ item }) => (
-                <View style={{
-                    ...styles.messageItem,
-                    backgroundColor: `${item.senderId == myUserId ? "#234a9d" : "#222"}`,
-                    marginLeft: `${item.senderId == myUserId ? 'auto' : '0%'}`
-                    }}>
-                <TouchableOpacity onPress={() => console.log(item)}>
-                    <Text
-                    style={{
-                        color: true ? "#fefefe" : "#fff",
-                        textDecorationLine: false ? "line-through" : "none",
-                    }}
-                    >
-                    {item.content}, {item.senderId}
-                    </Text>
-                </TouchableOpacity>
-                </View>
+        <View style={{flex: 1}}>
+            {conversation && 
+            <FlatList
+              keyExtractor={(conversation) => conversation.id.toString()}
+              style={ styles.messageList }
+              data={[...conversation.messages].reverse()}
+              inverted={true}
+              renderItem={({ item }) => (
+                <Message message={item}></Message>
             )}
             />}
+            {/* <MessageInput /> */}
             <View
             style={{
                 flexDirection: "row",
                 width: "100%",
-                justifyContent: "center",
+                justifyContent: "space-between",
                 alignItems: "center",
+                // backgroundColor: "red",
+                paddingHorizontal: 20,
+                marginBottom: 40,
+                marginTop: 10
             }}
             >
-            <Input
-                style={"inputLight"}
-                placeholder={"message..."}
-                value={inputValue}
-                onChangeText={(text) => setInputValue(text)}
-                onSubmitEditing={addTodoHandler}
-                onKeyPress={({ nativeEvent }) => console.log(nativeEvent.key)}
-            />
-            <Text
-                onPress={addTodoHandler}
-                style={{ color: "#29728c", fontSize: 18 }}
-            >
+              <Input
+                  style={"messageInput"}
+                  placeholder={"message..."}
+                  value={inputValue}
+                  onChangeText={(text) => setInputValue(text)}
+                  onSubmitEditing={handleSendMessage}
+                  onKeyPress={({ nativeEvent }) => console.log(nativeEvent.key)}
+              />
+              <Text
+                  onPress={handleSendMessage}
+                  style={{ color: "#29728c", fontSize: 18 }}
+              >
                 Send
-            </Text>
+              </Text>
             </View>
         </View>
-      </KeyboardAvoidingView> 
-    </Screen>
+      </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
     messageList:{
-      marginTop: 20,
-      marginBottom: 40,
       width: "100%",
-      marginHorizontal: "auto",
-      padding:2,
+      paddingHorizontal: 8,
       height: 'auto',
-    },
-    messageItem: {
-      color: "black",
-      paddingVertical: 6,
-      paddingHorizontal: 14,
-      marginTop: 12,
-      borderRadius: 20,
-      flexDirection: "row",
-      justifyContent: "space-between",
-      width: "80%",
+      paddingVertical: 12
     }
   });
 export default connectStateAndDispatch(ChattScreen);
