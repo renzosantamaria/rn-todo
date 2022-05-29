@@ -19,24 +19,29 @@ export interface IProps {
 
 const Message: React.FC<ConnectedProps<typeof connectStateAndDispatch> & IProps> = (props) => {
     
-    const myUserId = props.user.userId === props.message.senderId
-
+  const myUserId = props.user.userId === props.message.senderId
+  const localDate = new Date(props.message.updatedAt!.toString())
+  const localTime = localDate.toLocaleTimeString()
+  const [localHours, localMinutes, localSeconds] = localTime.split(':')
+  
   return (
     <View style={[styles.container, myUserId ? styles.rightContainer : styles.leftContainer]}>
-      <Text style={{ color: "#fefefe" }}> {props.message.content} </Text>
+      <Text style={{ color: "#fefefe" }}> {props.message.content}</Text>
+      <Text style={styles.timeStamp}>{`${localHours}:${localMinutes}`} </Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 8,
-    paddingHorizontal: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
     marginTop: 12,
     borderRadius: 14,
-    flexDirection: "row",
+    flexDirection: "column",
     justifyContent: "space-between",
     width: "80%",
+    position: "relative"
   },
   leftContainer: {
     backgroundColor: "#234a9d",
@@ -48,6 +53,14 @@ const styles = StyleSheet.create({
     marginLeft: 'auto',
     marginRight: 10
   },
+  timeStamp: {
+    color: "#b9b9b9",
+    fontSize:8,
+    alignSelf: "flex-end",
+    position: "absolute",
+    bottom: 4,
+    right: 8
+  }
 });
 
 export default connectStateAndDispatch(Message);
