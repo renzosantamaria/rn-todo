@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FlatList, Text, View, StyleSheet, KeyboardAvoidingView } from "react-native";
+import { FlatList, Text, View, StyleSheet, KeyboardAvoidingView, Platform } from "react-native";
 import { Audio } from "expo-av";
 import Message from "../components/Message/Message";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -86,49 +86,57 @@ const ChattScreen: React.FC<ConnectedProps<typeof connectStateAndDispatch> & IPr
     }
   };
 
+  const ChatScreenContent = <View style={{flex: 1}}>
+  {conversation && 
+  <FlatList
+    keyExtractor={(conversation) => conversation.id.toString()}
+    style={ styles.messageList }
+    data={[...conversation.messages].reverse()}
+    inverted={true}
+    renderItem={({ item }) => (
+      <Message message={item}></Message>
+  )}
+  />}
+  <View
+  style={{
+      flexDirection: "row",
+      width: "100%",
+      justifyContent: "space-between",
+      alignItems: "center",
+      // backgroundColor: "red",
+      paddingHorizontal: 20,
+      marginBottom: 40,
+      marginTop: 10
+  }}
+  >
+    <Input
+        style={"messageInput"}
+        placeholder={"message..."}
+        value={inputValue}
+        onChangeText={(text) => setInputValue(text)}
+        // onSubmitEditing={handleSendMessage}
+    />
+    <Text
+        onPress={handleSendMessage}
+        style={{ color: "#29728c", fontSize: 18 }}
+    >
+      Send
+    </Text>
+  </View>
+</View>
+
   return (
-       <KeyboardAvoidingView style={{ flex: 1, flexDirection: 'column',justifyContent: 'center',}} behavior="padding" enabled   keyboardVerticalOffset={100}>
-        <View style={{flex: 1}}>
-            {conversation && 
-            <FlatList
-              keyExtractor={(conversation) => conversation.id.toString()}
-              style={ styles.messageList }
-              data={[...conversation.messages].reverse()}
-              inverted={true}
-              renderItem={({ item }) => (
-                <Message message={item}></Message>
-            )}
-            />}
-            {/* <MessageInput /> */}
-            <View
-            style={{
-                flexDirection: "row",
-                width: "100%",
-                justifyContent: "space-between",
-                alignItems: "center",
-                // backgroundColor: "red",
-                paddingHorizontal: 20,
-                marginBottom: 40,
-                marginTop: 10
-            }}
-            >
-              <Input
-                  style={"messageInput"}
-                  placeholder={"message..."}
-                  value={inputValue}
-                  onChangeText={(text) => setInputValue(text)}
-                  onSubmitEditing={handleSendMessage}
-                  onKeyPress={({ nativeEvent }) => console.log(nativeEvent.key)}
-              />
-              <Text
-                  onPress={handleSendMessage}
-                  style={{ color: "#29728c", fontSize: 18 }}
-              >
-                Send
-              </Text>
-            </View>
-        </View>
-      </KeyboardAvoidingView>
+    <>
+      {Platform.OS === 'ios' ?
+        <KeyboardAvoidingView style={{ flex: 1, flexDirection: 'column',justifyContent: 'center',}} behavior="padding" enabled   keyboardVerticalOffset={100}>
+          {ChatScreenContent}
+        </KeyboardAvoidingView>
+        :
+        <>
+        {ChatScreenContent}
+        </>
+      }
+    </>
   );
 };
 
