@@ -57,7 +57,7 @@ const Unauthorized = () => (
 const AuthorizedStack = createStackNavigator<AuthorizedNavigationStack>()
 const Authorized = () => (
   <AuthorizedStack.Navigator screenOptions={{ headerShown: false }}>
-  <AuthorizedStack.Screen name="Home" component={BottomTabs} />
+  <AuthorizedStack.Screen name="Home" component={BottomTabs} options={{headerShown: false}} />
   <AuthorizedStack.Screen name="Password" component={ChangePasswordScreen} />
   <AuthorizedStack.Screen name="Chat" component={ChatScreen} options={{headerShown: true}} />
 </AuthorizedStack.Navigator>
@@ -66,10 +66,10 @@ const Authorized = () => (
 const BottomTabStack = createBottomTabNavigator<IBottomTabStack>();
 const renderBottomTabBar = (props) => <BottomTabBar {...props} />;
 const BottomTabs = () => (
-  <BottomTabStack.Navigator tabBar={renderBottomTabBar} >
+  <BottomTabStack.Navigator tabBar={renderBottomTabBar} screenOptions={{headerShown: false}} >
     <BottomTabStack.Screen name="Dashboard" component={TodosScreen} />
-    <BottomTabStack.Screen name="ChatList" component={ChatListScreen} options={{headerShown: false}} />
-    <BottomTabStack.Screen name="Profile" component={ProfileScreen} options={{headerShown: false}} />
+    <BottomTabStack.Screen name="ChatList" component={ChatListScreen}  />
+    <BottomTabStack.Screen name="Profile" component={ProfileScreen}  />
   </BottomTabStack.Navigator>
 )
 
