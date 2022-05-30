@@ -17,7 +17,8 @@ const connectStateAndDispatch = connect(
       user: userSelectors.userStateSelector(state),
       usersList: userSelectors.usersListStateSelector(state),
       conversations: conversationSelectors.conversationsStateSelector(state),
-      unreadConversations: conversationSelectors.unreadConversationStateSelector(state)
+      unreadConversations: conversationSelectors.unreadConversationStateSelector(state),
+      onlineUsers: userSelectors.onlineUsersIds(state)
     }),
     {
         getConversations: conversationMethods.getConversations,
@@ -37,6 +38,7 @@ const ChatListScreen: React.FC<ConnectedProps<typeof connectStateAndDispatch> & 
     useEffect(() => {
         props.getConversations()
         props.getExistingUsers()
+        
     }, [])
     
     const handleNavigation = (conversationId) => {
@@ -75,6 +77,16 @@ const ChatListScreen: React.FC<ConnectedProps<typeof connectStateAndDispatch> & 
         handleCloseModal()
     }
 
+    const checkOnline = (chatMembers) => {
+        let membersArray = chatMembers.split(',')
+        let senderId
+        membersArray.map( id => {
+            if(id != props.user.userId){
+                senderId = id
+            } 
+        })
+        return props.onlineUsers.includes(+senderId)
+    }
 
     const handleCloseModal = () => {
         setIsModalVisible(false)
@@ -96,6 +108,10 @@ const ChatListScreen: React.FC<ConnectedProps<typeof connectStateAndDispatch> & 
                         {props.unreadConversations.includes(item.id) &&
                             <View style={styles.badgeContainer}>
                             <Text style={styles.badgeText}>1</Text>
+                            </View>
+                        }
+                        { checkOnline(item.membersId) && 
+                            <View style={styles.onlineBadgeContainer}>
                             </View>
                         }
                         
@@ -250,6 +266,19 @@ const styles = StyleSheet.create({
         position: "absolute",
         left: 45,
         top: 10,
+      },
+      onlineBadgeContainer: {
+        backgroundColor: "#4abc76",
+        width: 16,
+        height: 16,
+        borderRadius: 10,
+        borderWidth: 1,
+        borderColor: "white",
+        justifyContent: "center",
+        alignItems: "center",
+        position: "absolute",
+        left: 45,
+        bottom: 10,
       },
       badgeText: {
         color: "white",
