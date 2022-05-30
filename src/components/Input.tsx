@@ -20,8 +20,8 @@ const Input: React.FC <IProps> = ({placeholder, placeholderColor, value, onChang
         placeholderTextColor={placeholderColor || 'grey'}
         onSubmitEditing={onSubmitEditing}
         onChangeText={onChangeText}
-        multiline={true}
-        numberOfLines={2}
+        // multiline={true}
+        // numberOfLines={2}
         // secureTextEntry={true}
         // onKeyPress={(e) => onKeyPress(e)}
     />
