@@ -65,6 +65,7 @@ const connectStateAndDispatch = connect(
     toggleTodoState: todoMethods.toggleTodoStateById,
     setUnreadConversations: conversationMethods.setUnreadConversations,
     setOpenConversationId: conversationMethods.setOpenConversationId,
+    setOnlineUsersIds: userMethods.setOnlineUsersIds
   }
 );
 
@@ -109,6 +110,11 @@ const Todos: React.FC<
     });
     socketRef.current!.on("conversationCreated", () => {
       props.getConversations();
+    });
+    socketRef.current!.on("onlineUsers", (payload) => {
+      let onlineUsers = []
+      payload.connectedUsers.map( user => { onlineUsers.push(+user.userId) })
+      props.setOnlineUsersIds(onlineUsers);
     });
     socketRef.current!.on("newRegisteredUser", () => {
       props.getAllUsers();
