@@ -4,7 +4,8 @@ import { IConversationsReduxState, Conversation } from "./conversation.types";
 
 const initialState: IConversationsReduxState = {
     conversations: [],
-    unreadConversations: []
+    unreadConversations: [],
+    openConversationId: null
 }
 
 export const conversationsReduxSlice = createSlice({
@@ -18,6 +19,10 @@ export const conversationsReduxSlice = createSlice({
         setUnreadConversations: (state, action: PayloadAction<Conversation["id"][]>) => {
             console.log('unreadConversations state updated');
             state.unreadConversations = action.payload;
+        },
+        setOpenConversationId:(state, action: PayloadAction<number | null>) => {
+            console.log('openConversationId state updated');
+            state.openConversationId = action.payload;
         },
     }
 })

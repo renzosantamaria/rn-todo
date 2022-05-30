@@ -13,25 +13,13 @@ const unreadConversationStateSelector = createSelector(
     (unreadConversationState) => unreadConversationState.unreadConversations
 )
 
-// const userIdSelector = createSelector(
-//     (state: IReduxState) => state.auth,
-//     (authState) => authState.userId
-// )
-
-// const loginCredentialsStateSelector = generateRequestStateSelectors(
-//     "loginCredentials"
-//   );
-
-// const isLoginInProgressSelector = (state: IReduxState) => {
-//     loginCredentialsStateSelector.isLoading(state)
-// }
-
-// const requestResetPasswordStateSelector = generateRequestStateSelectors(
-//     "requestResetPassword"
-//   );
-// const signupStateSelector = generateRequestStateSelectors("signup");
+const openConversationStateSelector = createSelector(
+    (state:IReduxState) => state.conversations,
+    (openConversationState) => openConversationState.openConversationId
+)
 
 export default {
     conversationsStateSelector,
-    unreadConversationStateSelector
+    unreadConversationStateSelector,
+    openConversationStateSelector
 }
