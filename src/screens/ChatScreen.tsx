@@ -27,7 +27,8 @@ const connectStateAndDispatch = connect(
     {
       postMessage: messageMethods.postMessage,
       getConversations: conversationMethods.getConversations,
-      setUnreadConversations: conversationMethods.setUnreadConversations
+      setUnreadConversations: conversationMethods.setUnreadConversations,
+      setOpenConversationId: conversationMethods.setOpenConversationId
     }
   );
 interface IProps {
@@ -43,6 +44,16 @@ const ChattScreen: React.FC<ConnectedProps<typeof connectStateAndDispatch> & IPr
   const { conversationId } = props.route.params;
   const [sound, setSound] = useState();
   const myUserId = props.user.userId
+
+  useEffect(() => {
+    const unsubscribe = props.navigation.addListener('beforeRemove', e => {
+      props.setOpenConversationId(null)
+      
+      e.preventDefault(); // Prevent default action
+      unsubscribe() // Unsubscribe the event on first call to prevent infinite loop
+      props.navigation.navigate('Home') // Navigate to your desired screen
+    });
+ }, [])
 
   useEffect(()=> {
     props.navigation.setOptions({ headerTitle: conversation?.recipientNames.join(', '), headerBackTitle: ' ', headerTintColor: 'black' });
