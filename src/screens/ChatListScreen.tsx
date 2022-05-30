@@ -22,7 +22,8 @@ const connectStateAndDispatch = connect(
     {
         getConversations: conversationMethods.getConversations,
         createConversation: conversationMethods.createConversation,
-        getExistingUsers: userMethods.getAllUsers
+        getExistingUsers: userMethods.getAllUsers,
+        setOpenConversationId: conversationMethods.setOpenConversationId
     }
   );
 interface IProps {
@@ -41,6 +42,7 @@ const ChatListScreen: React.FC<ConnectedProps<typeof connectStateAndDispatch> & 
     const handleNavigation = (conversationId) => {
         // Should be nice to emit an event that removes this conversationId from the unreadMessages
         props.navigation.navigate('Chat', {conversationId})
+        props.setOpenConversationId(conversationId)
         props.getConversations()
     }
 
