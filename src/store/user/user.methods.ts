@@ -118,8 +118,12 @@ const getAllUsers = (): AppThunk => async (dispatch) => {
         )
     }
 }
+const setOnlineUsersIds = (onlineUsersIds: number[]): AppThunk => async (dispatch) => {
+    dispatch(userReduxSlice.actions.setOnlineUsersIds(onlineUsersIds))
+}
 export default {
     changeUserPassword,
     getAllUsers,
-    registerUser
+    registerUser,
+    setOnlineUsersIds
 }

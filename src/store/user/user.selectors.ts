@@ -11,6 +11,10 @@ const usersListStateSelector = createSelector(
     (state: IReduxState) => state.user,
     (userListState) => userListState.userList
 )
+const onlineUsersIds = createSelector(
+    (state: IReduxState) => state.user,
+    (userState) => userState.onlineUsersIds
+)
 
 const registerUserStateSelector = generateRequestStateSelectors("registerUser");
 
@@ -20,5 +24,6 @@ export default {
     userStateSelector,
     usersListStateSelector,
     registerUserStateSelector,
-    isRegisterInProgressSelector
+    isRegisterInProgressSelector,
+    onlineUsersIds
 }

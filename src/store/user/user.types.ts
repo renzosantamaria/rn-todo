@@ -16,5 +16,6 @@ export type UserFromUsersList = {
 
 export interface IUserReduxState {
     user: User
-    userList: UserFromUsersList[]
+    userList: UserFromUsersList[],
+    onlineUsersIds: number[]
 }

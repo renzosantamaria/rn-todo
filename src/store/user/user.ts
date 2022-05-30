@@ -10,7 +10,8 @@ const initialState: IUserReduxState= {
         token: '',
         userId: undefined
     },
-    userList: []
+    userList: [],
+    onlineUsersIds: []
 }
 
 export const userReduxSlice = createSlice({
@@ -28,6 +29,9 @@ export const userReduxSlice = createSlice({
         },
         setUserList(state, action: PayloadAction<UserFromUsersList[]>){
             state.userList = action.payload
+        },
+        setOnlineUsersIds(state, action: PayloadAction<number[]>){
+            state.onlineUsersIds = action.payload
         },
         clearUser(state){
             state.user = {
