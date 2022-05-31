@@ -118,7 +118,7 @@ const ChatListScreen: React.FC<ConnectedProps<typeof connectStateAndDispatch> & 
                         <View style={styles.rightContainer}>
                             <View style={styles.row}>
                                 <Text numberOfLines={1} style={styles.name}> {item.recipientNames.join(', ')} </Text>
-                                <Text style={styles.text}> {item.updatedAt && item.updatedAt?.split('T')[0]} </Text>
+                                <Text style={styles.text}> {item.messages.length > 0 && item.messages[item.messages.length-1].updatedAt?.split('T')[0]} </Text>
                             </View>
                             <Text numberOfLines={1} style={{
                                 fontWeight: props.unreadConversations.includes(item.id) ? "bold" : "normal",
