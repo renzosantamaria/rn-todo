@@ -121,7 +121,6 @@ const Todos: React.FC<
     });
     socketRef.current!.on("updateSenderSessions", (payload) => {
       let unreadConversations = [...props.unreadConversations];
-      console.log(unreadConversations);
 
       if (unreadConversations.includes(+payload.chatId)) {
         let filteredConversation = unreadConversations.filter(
@@ -381,7 +380,6 @@ async function registerForPushNotificationsAsync() {
       return;
     }
     token = (await Notifications.getExpoPushTokenAsync()).data;
-    console.log(token);
   } else {
     alert("Must use physical device for Push Notifications");
   }

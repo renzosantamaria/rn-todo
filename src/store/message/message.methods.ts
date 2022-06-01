@@ -24,7 +24,6 @@ const postMessage = (chatId: number, content: string): AppThunk => async (dispat
         //fetch the conversation or just the messages by conversation ID
         console.log(response);
         if (response) {
-            console.log('sending fetch user conversations');
             
             let res = await API.fetchUserConversations()
             if (res) {

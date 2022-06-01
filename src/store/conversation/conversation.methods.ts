@@ -20,8 +20,6 @@ const getConversations = (): AppThunk => async (dispatch) => {
         
         dispatch(conversationsReduxSlice.actions.setConversations(response))
 
-        console.log('CONVERSATIONS LIST FETCHED SUCCESSFULLY');
-
         dispatch(
             addRequestState({
                 name: "postTodo",

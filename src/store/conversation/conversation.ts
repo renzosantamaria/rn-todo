@@ -13,15 +13,12 @@ export const conversationsReduxSlice = createSlice({
     initialState,
     reducers: {
         setConversations: (state, action: PayloadAction<Conversation[]>) => {
-            console.log('conversations state updated');
             state.conversations = action.payload;
         },
         setUnreadConversations: (state, action: PayloadAction<Conversation["id"][]>) => {
-            console.log('unreadConversations state updated');
             state.unreadConversations = action.payload;
         },
         setOpenConversationId:(state, action: PayloadAction<number | null>) => {
-            console.log('openConversationId state updated');
             state.openConversationId = action.payload;
         },
     }
