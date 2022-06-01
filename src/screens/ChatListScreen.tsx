@@ -37,23 +37,30 @@ const ChatListScreen: React.FC<ConnectedProps<typeof connectStateAndDispatch> & 
     const [sortedChatList, setSortedChatList] = useState([])
 
     useEffect(() => {
-        props.getConversations()
-        props.getExistingUsers()
-    }, [])
-    useEffect(() => {
         let sorted = [...props.conversations].sort((a, b) => {
-            if(a.messages.length == 0 || b.messages.length){
+            if(a.messages.length == 0 || b.messages.length == 0){
                 return -1
             }
-            if (a.messages[a.messages.length-1].updatedAt > b.messages[b.messages.length-1].updatedAt) {
-                return -1
+            if (b.messages.length > 0) {
+                
+                if (a.messages[a.messages.length-1].updatedAt > b.messages[b.messages.length-1].updatedAt) {
+                    return -1
+                }
+                if (a.messages[a.messages.length-1].updatedAt < b.messages[b.messages.length-1].updatedAt){
+                    return 1
+                }
             }
-            if (a.messages[a.messages.length-1].updatedAt < b.messages[b.messages.length-1].updatedAt){
+            else{
                 return -1
             }
         })
         setSortedChatList(sorted)
     }, [props.conversations])
+
+    useEffect(() => {
+        props.getConversations()
+        props.getExistingUsers()
+    }, [])
     
     const handleNavigation = (conversationId) => {
         // Should be nice to emit an event that removes this conversationId from the unreadMessages
