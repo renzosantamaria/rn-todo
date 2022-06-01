@@ -34,12 +34,26 @@ interface IProps {
   
 const ChatListScreen: React.FC<ConnectedProps<typeof connectStateAndDispatch> & IProps> = (props) => {
     const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
+    const [sortedChatList, setSortedChatList] = useState([])
 
     useEffect(() => {
         props.getConversations()
         props.getExistingUsers()
-        
     }, [])
+    useEffect(() => {
+        let sorted = [...props.conversations].sort((a, b) => {
+            if(a.messages.length == 0 || b.messages.length){
+                return -1
+            }
+            if (a.messages[a.messages.length-1].updatedAt > b.messages[b.messages.length-1].updatedAt) {
+                return -1
+            }
+            if (a.messages[a.messages.length-1].updatedAt < b.messages[b.messages.length-1].updatedAt){
+                return -1
+            }
+        })
+        setSortedChatList(sorted)
+    }, [props.conversations])
     
     const handleNavigation = (conversationId) => {
         // Should be nice to emit an event that removes this conversationId from the unreadMessages
@@ -98,7 +112,7 @@ const ChatListScreen: React.FC<ConnectedProps<typeof connectStateAndDispatch> & 
             <FlatList
                 // keyExtractor={(todo) => todo.userId}
                 style={{paddingTop: 0}}
-                data={props.conversations}
+                data={sortedChatList}
                 renderItem={({ item }) => (
                     <TouchableOpacity style={styles.container} onPress={() => handleNavigation(item.id)}>
                         <Image
