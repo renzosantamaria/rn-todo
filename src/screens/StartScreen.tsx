@@ -94,20 +94,85 @@ const Todos: React.FC<
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
   const responseListener = useRef();
-  // const { conversationId } = props.route.params;
   const state = useNavigationState((state) => state);
+
+
+  async function registerForPushNotificationsAsync() {
+    let token;
+    if (Device.isDevice) {
+      const { status: existingStatus } =
+        await Notifications.getPermissionsAsync();
+      let finalStatus = existingStatus;
+      if (existingStatus !== "granted") {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+      }
+      if (finalStatus !== "granted") {
+        alert("Failed to get push token for push notification!");
+        return;
+      }
+      token = (await Notifications.getExpoPushTokenAsync()).data;
+      console.log('start: ' + token);
+      
+      setExpoPushToken(token)
+    } else {
+      alert("Must use physical device for Push Notifications");
+    }
+  
+    if (Platform.OS === "android") {
+      Notifications.setNotificationChannelAsync("default", {
+        name: "default",
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: "#FF231F7C",
+      });
+    }
+    return token;
+  }
+
+  useEffect(() => {
+    props.getAllTodos();
+
+    // This listener is fired whenever a notification is received while the app is foregrounded
+    notificationListener.current =
+      Notifications.addNotificationReceivedListener((notification) => {
+        setNotification(notification);
+      });
+
+    // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
+    responseListener.current =
+      Notifications.addNotificationResponseReceivedListener((response) => {
+        const { chatId } = response.notification.request.content.data;
+        props.getConversations()
+        props.navigation.navigate("Chat", { conversationId: chatId }); //navigate to chat
+        props.setOpenConversationId(chatId);
+      });
+
+    return () => {
+      Notifications.removeNotificationSubscription(
+        notificationListener.current
+      );
+      Notifications.removeNotificationSubscription(responseListener.current);
+    };
+  }, []);
 
   useEffect(() => {
     // socketRef.current = io('http://192.168.0.40:5001') // dev
     socketRef.current = io("wss://ts-rn-todo.herokuapp.com"); //prod
 
-    socketRef.current!.on("connect", () => {
-      let sessionId = socketRef.current.id;
-      socketRef.current.emit("namespaceSessionId", {
-        userId: props.user.userId,
-        sessionId,
-      });
-    });
+    const regToken = async () => {
+      registerForPushNotificationsAsync().then((token) => {
+        let sessionId = socketRef.current.id;
+        socketRef.current.emit("namespaceSessionId", {
+          userId: props.user.userId,
+          sessionId,
+          expoPushToken: token,
+        });
+        }
+      );
+    }
+    regToken()
+
     socketRef.current!.on("conversationCreated", () => {
       props.getConversations();
     });
@@ -131,11 +196,12 @@ const Todos: React.FC<
       props.getConversations();
     });
     socketRef.current!.on("privateMessage", (payload) => {
-      Vibration.vibrate(1 * 800);
+      // Vibration.vibrate(1 * 800);
       playSound();
-      payload.chatId == props.openConversationId
-        ? ""
-        : sendPushNotification(expoPushToken, payload);
+      // payload.chatId == props.openConversationId
+      //   ? ""
+      //   : sendPushNotification(expoPushToken, payload);
+
       props.getConversations();
       let unreadConversations = [...props.unreadConversations];
       unreadConversations.includes(payload.chatId)
@@ -173,34 +239,7 @@ const Todos: React.FC<
     await props.toggleTodoState(id);
   };
 
-  useEffect(() => {
-    props.getAllTodos();
-
-    registerForPushNotificationsAsync().then((token) =>
-      setExpoPushToken(token)
-    );
-
-    // This listener is fired whenever a notification is received while the app is foregrounded
-    notificationListener.current =
-      Notifications.addNotificationReceivedListener((notification) => {
-        setNotification(notification);
-      });
-
-    // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
-    responseListener.current =
-      Notifications.addNotificationResponseReceivedListener((response) => {
-        const { chatId } = response.notification.request.content.data;
-        props.navigation.navigate("Chat", { conversationId: chatId }); //navigate to chat
-        props.setOpenConversationId(chatId);
-      });
-
-    return () => {
-      Notifications.removeNotificationSubscription(
-        notificationListener.current
-      );
-      Notifications.removeNotificationSubscription(responseListener.current);
-    };
-  }, []);
+  
 
   const returnFilteredList = () => {
     switch (todoListFilter) {
@@ -365,36 +404,7 @@ async function sendPushNotification(expoPushToken, payload) {
   });
 }
 
-async function registerForPushNotificationsAsync() {
-  let token;
-  if (Device.isDevice) {
-    const { status: existingStatus } =
-      await Notifications.getPermissionsAsync();
-    let finalStatus = existingStatus;
-    if (existingStatus !== "granted") {
-      const { status } = await Notifications.requestPermissionsAsync();
-      finalStatus = status;
-    }
-    if (finalStatus !== "granted") {
-      alert("Failed to get push token for push notification!");
-      return;
-    }
-    token = (await Notifications.getExpoPushTokenAsync()).data;
-  } else {
-    alert("Must use physical device for Push Notifications");
-  }
 
-  if (Platform.OS === "android") {
-    Notifications.setNotificationChannelAsync("default", {
-      name: "default",
-      importance: Notifications.AndroidImportance.MAX,
-      vibrationPattern: [0, 250, 250, 250],
-      lightColor: "#FF231F7C",
-    });
-  }
-
-  return token;
-}
 
 const styles = StyleSheet.create({
   flatlist: {
